@@ -7,14 +7,13 @@ type Article = {
   title: string;
 };
 
-export const loader: LoaderFunction = (): Promise<Article[]> => {
+export const loader: LoaderFunction = async (): Promise<Article[]> => {
   const storagePath = path.resolve("storage", "articles");
+  const filename = await fs.readdir(storagePath);
 
-  return fs.readdir(storagePath).then((filenames) => {
-    return filenames.map((filename) => {
-      const [id, title] = filename.split("_");
-      return { id: id, title: title.replace(".mdx", "") };
-    });
+  return filename.map((filename): Article => {
+    const [id, title] = filename.split("_");
+    return { id: id, title: title.replace(".mdx", "") };
   });
 };
 
