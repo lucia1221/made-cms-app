@@ -1,20 +1,20 @@
 import { Link, LoaderFunction, useLoaderData } from "remix";
-import path from "path";
-import fs from "fs/promises";
+import { databaseService } from "~/services/databaseService";
 
 type Article = {
   id: number | string;
   title: string;
+  content: string;
 };
 
-export const loader: LoaderFunction = async (): Promise<Article[]> => {
-  const storagePath = path.resolve("storage", "articles");
-  const filename = await fs.readdir(storagePath);
+export const loader: LoaderFunction = async function (): Promise<Article[]> {
+  const response = await databaseService.from<Article>("articles").select();
 
-  return filename.map((filename): Article => {
-    const [id, title] = filename.split("_");
-    return { id: id, title: title.replace(".mdx", "") };
-  });
+  if (response.error !== null) {
+    return [];
+  }
+
+  return response.data;
 };
 
 export default function Index() {
