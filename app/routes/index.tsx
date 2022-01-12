@@ -1,16 +1,13 @@
 import { Link, LoaderFunction, useLoaderData } from "remix";
+import { Article } from "~/models/article";
 import { databaseService } from "~/services/databaseService";
 
-type Article = {
-  id: number | string;
-  title: string;
-  content: string;
-};
-
 export const loader: LoaderFunction = async function (): Promise<Article[]> {
-  const response = await databaseService.from<Article>("articles").select();
+  const response = await databaseService
+    .from<Article>("articles")
+    .select("id, title");
 
-  if (response.error !== null) {
+  if (response.error) {
     return [];
   }
 
