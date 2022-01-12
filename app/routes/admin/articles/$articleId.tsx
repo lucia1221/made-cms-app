@@ -5,7 +5,7 @@ export default function ArticleRoute() {
 
   return (
     <div>
-      Hello {params.articleId}
+      Edit article {params.articleId}
     </div>
   );
 }
