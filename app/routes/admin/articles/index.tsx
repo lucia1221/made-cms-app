@@ -42,14 +42,19 @@ export default function AdminArticleListing() {
     }
   }
 
-  return articles.map((a) => (
-    <Form method="delete" key={a.id}>
-      <input defaultValue={a.id} name="id" type="hidden"></input>
-      {a.title}
-      <Link to={`/admin/articles/${a.id}`}>Edit</Link>
-      <button type="submit" onClick={confirmDelete}>
-        Delete
-      </button>
-    </Form>
-  ));
+  return (
+    <>
+      <Link to={"/admin/articles/new"}>write new article</Link>
+      {articles.map((a) => (
+        <Form method="delete" key={a.id}>
+          <input defaultValue={a.id} name="id" type="hidden"></input>
+          {a.title}
+          <Link to={`/admin/articles/${a.id}`}>Edit</Link>
+          <button type="submit" onClick={confirmDelete}>
+            Delete
+          </button>
+        </Form>
+      ))}
+    </>
+  );
 }

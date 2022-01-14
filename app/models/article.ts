@@ -1,8 +1,5 @@
-export interface Article extends ArticleDraft {
+export interface Article {
   id: number | string;
-}
-
-export interface ArticleDraft {
   title: string;
   content: string;
 }

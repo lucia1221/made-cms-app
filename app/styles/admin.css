@@ -30,3 +30,11 @@
   grid-area: main;
   padding: 2rem;
 }
+
+.block-link {
+  display: block;
+}
+
+.block-link-active {
+  background-color: darkgray;
+}
