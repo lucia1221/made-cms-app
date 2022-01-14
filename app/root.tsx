@@ -5,16 +5,18 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
 
 export let links: LinksFunction = () => {
-  return [    {
-    rel: "stylesheet",
-    href: "https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css"
-  }]
-}
+  return [
+    {
+      rel: "stylesheet",
+      href: "https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css",
+    },
+  ];
+};
 
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };

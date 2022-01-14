@@ -10,12 +10,12 @@ export const action: ActionFunction = async function ({ request }) {
     content: form.get("content")?.toString() ?? "",
   };
 
-try {
-   const response = await databaseService.from("articles").insert(article)
-   console.log(response)
-} catch (error) {
-    console.log(error)
-}
+  try {
+    const response = await databaseService.from("articles").insert(article);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
 
   return null;
 };
