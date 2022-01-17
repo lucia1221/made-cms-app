@@ -37,7 +37,7 @@ export const action: ActionFunction = async function ({ request }) {
 export default function AdminArticleListing() {
   const articles = useLoaderData<Article[]>();
   function confirmDelete(event: any) {
-    if (window.confirm("Are you sure?") !== true) {
+    if (window.confirm("Are you sure?") === false) {
       event.preventDefault();
     }
   }
@@ -45,14 +45,12 @@ export default function AdminArticleListing() {
   return (
     <>
       <Link to={"/admin/articles/new"}>write new article</Link>
-      {articles.map((a) => (
-        <Form method="delete" key={a.id}>
-          <input defaultValue={a.id} name="id" type="hidden"></input>
-          {a.title}
-          <Link to={`/admin/articles/${a.id}`}>Edit</Link>
-          <button type="submit" onClick={confirmDelete}>
-            Delete
-          </button>
+      {articles.map((article) => (
+        <Form key={article.id} method="delete" onSubmit={confirmDelete}>
+          <input defaultValue={article.id} name="id" type="hidden"></input>
+          {article.title}
+          <Link to={`/admin/articles/${article.id}`}>Edit</Link>
+          <button type="submit">Delete</button>
         </Form>
       ))}
     </>
