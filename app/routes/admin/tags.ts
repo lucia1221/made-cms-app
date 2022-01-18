@@ -12,8 +12,8 @@ export const loader: LoaderFunction = async function ({ request }) {
 
   const response = await databaseService()
     .from<Tag>("tags")
-    .select("id, value")
-    .ilike("value", `%${search}%`);
+    .select("id, name")
+    .ilike("name", `%${search}%`);
 
   return json(
     response.data ?? response.error,

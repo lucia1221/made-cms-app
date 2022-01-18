@@ -68,7 +68,7 @@ export const TagInput: React.FC<Props> = (props) => {
   const fetcher = useFetcher<Tag[]>();
 
   const data = (fetcher.data ?? [])
-    .map((tag) => tag.value)
+    .map((tag) => tag.name)
     .filter((val) => selection.includes(val) === false);
 
   const noMatchOnRemote =
