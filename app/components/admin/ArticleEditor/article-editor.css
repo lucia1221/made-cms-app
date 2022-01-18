@@ -1,0 +1,15 @@
+.article-editor {
+  display: grid;
+  grid-template-columns: minmax(600px, 70%) auto;
+  grid-template-rows: 1fr;
+  grid-template-areas: "content meta";
+}
+
+.content {
+  grid-area: content;
+}
+
+.meta {
+  grid-area: meta;
+  border-left: 1px solid lightgray;
+}

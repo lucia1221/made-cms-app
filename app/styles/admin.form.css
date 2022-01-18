@@ -1,0 +1,47 @@
+:root {
+  --color-danger: #ff3064;
+
+  --field-background: #eeeff5;
+  --field-height: 40px;
+  --field-padding: 15px;
+  --field-radius: 8px;
+  --field-text-color-focus: #333;
+  --field-text-color: #777;
+  --field-text-size: 16px;
+}
+
+.input-group + .input-group {
+  margin-top: 1rem;
+}
+
+input[type="date"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"] {
+  /* Legacy */
+  background: none;
+  border: 0;
+  outline: none;
+  /* Modern */
+  all: unset;
+  /* Custom styling */
+  background: var(--field-background);
+  height: var(--field-height);
+  padding: var(--field-padding);
+  box-sizing: border-box;
+  border-radius: var(--field-radius);
+  color: var(--field-text-color);
+  font-size: var(--field-text-size);
+}
+
+input:focus {
+  color: var(--field-text-color-focus);
+}

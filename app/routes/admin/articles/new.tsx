@@ -1,6 +1,11 @@
-import { ActionFunction, Form, redirect } from "remix";
+import { ActionFunction, Form, LinksFunction, redirect } from "remix";
+import { ArticleEditor, links as articleEditorLinks } from "~/components/admin";
 import { Article } from "~/models/article";
 import { databaseService } from "~/services/databaseService";
+
+export const links: LinksFunction = function () {
+  return [...articleEditorLinks()];
+};
 
 export const action: ActionFunction = async function ({ request }) {
   const form = await request.formData();
@@ -11,7 +16,7 @@ export const action: ActionFunction = async function ({ request }) {
   };
 
   try {
-    const response = await databaseService
+    const response = await databaseService()
       .from<Article>("articles")
       .insert(article);
 
@@ -30,9 +35,7 @@ export const action: ActionFunction = async function ({ request }) {
 export default function NewArticlesRoute() {
   return (
     <Form method="post">
-      <input type={"text"} name="title" placeholder="post title" />
-      <input type={"text"} name="content" placeholder="post content" />
-      <button type="submit">Create new post</button>
+      <ArticleEditor />
     </Form>
   );
 }

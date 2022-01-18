@@ -1,10 +1,12 @@
 import { LinksFunction, NavLink, Outlet } from "remix";
-import styles from "~/styles/admin.css";
+import adminStyles from "~/styles/admin.css";
+import adminFormStyles from "~/styles/admin.form.css";
 import cx from "classnames";
 
 export const links: LinksFunction = function () {
   return [
-    { rel: "stylesheet", href: styles },
+    { rel: "stylesheet", href: adminStyles },
+    { rel: "stylesheet", href: adminFormStyles },
     {
       rel: "preconnect",
       href: "https://fonts.googleapis.com",

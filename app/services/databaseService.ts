@@ -1,6 +1,14 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.SUPABASE_URL as string;
-const supabaseKey = process.env.SUPABASE_ANON_KEY as string;
+let instance: SupabaseClient;
 
-export const databaseService = createClient(supabaseUrl, supabaseKey);
+export const databaseService = function () {
+  if (instance) {
+    return instance;
+  }
+
+  const supabaseUrl = process.env.SUPABASE_URL as string;
+  const supabaseKey = process.env.SUPABASE_ANON_KEY as string;
+
+  return createClient(supabaseUrl, supabaseKey);
+};

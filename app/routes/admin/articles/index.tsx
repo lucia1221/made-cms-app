@@ -9,7 +9,7 @@ import { Article } from "~/models/article";
 import { databaseService } from "~/services/databaseService";
 
 export const loader: LoaderFunction = async function (): Promise<Article[]> {
-  const response = await databaseService
+  const response = await databaseService()
     .from<Article>("articles")
     .select("id, title");
 
@@ -24,7 +24,7 @@ export const action: ActionFunction = async function ({ request }) {
     case "DELETE":
       const form = await request.formData();
 
-      await databaseService
+      await databaseService()
         .from("articles")
         .delete()
         .match({ id: form.get("id") });

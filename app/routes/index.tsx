@@ -3,7 +3,7 @@ import { Article } from "~/models/article";
 import { databaseService } from "~/services/databaseService";
 
 export const loader: LoaderFunction = async function (): Promise<Article[]> {
-  const response = await databaseService
+  const response = await databaseService()
     .from<Article>("articles")
     .select("id, title");
 
