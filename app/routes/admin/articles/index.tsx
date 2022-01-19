@@ -39,7 +39,7 @@ export const action: ActionFunction = async function ({ request }) {
 
 export default function AdminArticleListing() {
   const articles = useLoaderData<Article[]>();
-  function confirmDelete(event: any) {
+  function confirmDelete(event: React.FormEvent<HTMLFormElement>) {
     if (window.confirm("Are you sure?") === false) {
       event.preventDefault();
     }
