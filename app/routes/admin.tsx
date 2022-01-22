@@ -1,7 +1,7 @@
+import cx from "classnames";
 import { LinksFunction, NavLink, Outlet } from "remix";
 import adminStyles from "~/styles/admin.css";
 import adminFormStyles from "~/styles/admin.form.css";
-import cx from "classnames";
 
 export const links: LinksFunction = function () {
   return [
