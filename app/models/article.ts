@@ -5,4 +5,5 @@ export interface Article {
   title: string;
   content: string;
   tags: Tag[];
+  created_at: string;
 }

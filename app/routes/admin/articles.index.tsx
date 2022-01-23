@@ -7,21 +7,54 @@ import {
 } from "remix";
 import { Article } from "~/models/article";
 import { databaseService } from "~/services/databaseService";
+import { getRange } from "~/utils/paging";
 
-export const loader: LoaderFunction = async function (): Promise<Article[]> {
-  const response = await databaseService().from<Article>("articles").select(`
+interface LoaderData {
+  articles: Article[];
+  previousPageUrl: string | null;
+  nextPageUrl: string | null;
+}
+
+export const loader: LoaderFunction = async function ({
+  request,
+}): Promise<LoaderData> {
+  const url = new URL(request.url);
+  const page = Number(url.searchParams.get("page") ?? 1);
+  const itemsPerPage = 10;
+  const range = getRange(page, itemsPerPage);
+
+  const response = await databaseService()
+    .from<Article>("articles")
+    .select(
+      `
       id, title,
-      tags (
-        id, name
-      )
-    `);
+      tags ( id, name )
+    `,
+      { count: "exact" },
+    )
+    .order("id", { ascending: false })
+    .range(range.from, range.to);
 
-  if (response.error) {
-    return [];
+  let previousPageUrl = null;
+  let nextPageUrl = null;
+
+  if (page > 1) {
+    url.searchParams.set("page", (page - 1).toString());
+    previousPageUrl = `${url.pathname}?${url.searchParams}`;
   }
 
-  return response.data;
+  if (page * itemsPerPage < response.count!) {
+    url.searchParams.set("page", (page + 1).toString());
+    nextPageUrl = `${url.pathname}?${url.searchParams}`;
+  }
+
+  return {
+    articles: response.error ? [] : response.data,
+    previousPageUrl: previousPageUrl,
+    nextPageUrl: nextPageUrl,
+  };
 };
+
 export const action: ActionFunction = async function ({ request }) {
   switch (request.method) {
     case "DELETE":
@@ -38,7 +71,7 @@ export const action: ActionFunction = async function ({ request }) {
 };
 
 export default function AdminArticleListing() {
-  const articles = useLoaderData<Article[]>();
+  const data = useLoaderData<LoaderData>();
   function confirmDelete(event: React.FormEvent<HTMLFormElement>) {
     if (window.confirm("Are you sure?") === false) {
       event.preventDefault();
@@ -48,14 +81,18 @@ export default function AdminArticleListing() {
   return (
     <>
       <Link to={"/admin/articles/new"}>write new article</Link>
-      {articles.map((article) => (
+      {data.articles.map((article) => (
         <Form key={article.id} method="delete" onSubmit={confirmDelete}>
           <input defaultValue={article.id} name="id" type="hidden"></input>
-          {article.title}
+          {article.id},{article.title}
           <Link to={`/admin/articles/${article.id}`}>Edit</Link>
           <button type="submit">Delete</button>
         </Form>
       ))}
+      {data.previousPageUrl && (
+        <Link to={data.previousPageUrl}>previous page</Link>
+      )}
+      {data.nextPageUrl && <Link to={data.nextPageUrl}>next page</Link>}
     </>
   );
 }
