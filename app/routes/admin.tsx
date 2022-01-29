@@ -1,5 +1,12 @@
-import cx from "classnames";
-import { LinksFunction, NavLink, Outlet } from "remix";
+import {
+  LinksFunction,
+  LoaderFunction,
+  NavLink,
+  Outlet,
+  redirect,
+} from "remix";
+import { Sidebar } from "~/components/admin";
+import { authenticator } from "~/services/auth.server";
 import adminStyles from "~/styles/admin.css";
 import adminFormStyles from "~/styles/admin.form.css";
 
@@ -19,23 +26,24 @@ export const links: LinksFunction = function () {
   ];
 };
 
-function getClassName(props: { isActive: boolean }): string {
-  return cx({
-    "block-link": true,
-    "block-link-active": props.isActive,
-  });
-}
+export const loader: LoaderFunction = async function ({ request }) {
+  let user = await authenticator.isAuthenticated(request);
+
+  if (user === null) {
+    let query = new URLSearchParams();
+    query.set("redirectTo", request.url);
+
+    return redirect(`/login?${query.toString()}`);
+  }
+
+  return null;
+};
 
 export default function AdminRoute() {
   return (
     <div className="container">
       <div className="sidebar">
-        <NavLink to="/admin/articles" className={getClassName}>
-          articles
-        </NavLink>
-        <NavLink to="/admin/users" className={getClassName}>
-          users
-        </NavLink>
+        <Sidebar></Sidebar>
       </div>
       <div className="main">
         <Outlet></Outlet>
