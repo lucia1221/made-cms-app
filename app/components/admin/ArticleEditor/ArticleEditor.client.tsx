@@ -1,17 +1,19 @@
 import { LinksFunction } from "remix";
 import { InputGroup } from "~/components";
-import { links as tagInputLinks, TagInput } from "../../form/TagInput/TagInput";
-import editorStyles from "./article-editor.css";
+import { TagInput } from "../../form/TagInput/TagInput";
+import { Editor, EditorState } from "draft-js";
+import { useState } from "react";
 
-export const links: LinksFunction = function () {
-  return [{ rel: "stylesheet", href: editorStyles }, ...tagInputLinks()];
-};
 
 export const ArticleEditor: React.FC = () => {
+  
+  let [editorState, setEditorState]= useState(EditorState.createEmpty())
+  console.log(editorState)
   return (
     <>
       <div className="editor-main">
-        <textarea name="content" placeholder="Post content" />
+        
+        <Editor editorState={editorState} onChange={setEditorState} />
       </div>
       <div className="editor-sidebar">
         <InputGroup label="Title">
@@ -27,3 +29,6 @@ export const ArticleEditor: React.FC = () => {
     </>
   );
 };
+
+
+{/* <textarea name="content" placeholder="Post content" />? */}

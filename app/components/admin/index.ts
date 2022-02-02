@@ -1,2 +1,2 @@
-export * from "./ArticleEditor/ArticleEditor";
+export * from "./ArticleEditor/ArticleEditor.client";
 export * from "./sidebar/Sidebar";

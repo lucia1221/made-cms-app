@@ -1,12 +1,14 @@
 import { ActionFunction, Form, LinksFunction, redirect } from "remix";
-import { ArticleEditor, links as articleEditorLinks } from "~/components/admin";
+import { ArticleEditor } from "~/components/admin";
+import editorStyles from "~/components/admin/ArticleEditor/article-editor.css";
+import { links as tagInputLinks } from "~/components/form/TagInput/TagInput";
 import { Article } from "~/models/article";
 import { ArticleTag } from "~/models/article_tag";
 import { Tag } from "~/models/tag";
 import { databaseService } from "~/services/databaseService";
 
 export const links: LinksFunction = function () {
-  return [...articleEditorLinks()];
+  return [...tagInputLinks(), { rel: "stylesheet", href: editorStyles }];
 };
 
 export const action: ActionFunction = async function ({ request }) {
