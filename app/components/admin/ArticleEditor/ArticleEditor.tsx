@@ -9,13 +9,11 @@ export const links: LinksFunction = function () {
 
 export const ArticleEditor: React.FC = () => {
   return (
-    <div className="article-editor">
-      <div className="content">
-        <InputGroup label="Content">
-          <input type="text" name="content" placeholder="Post content" />
-        </InputGroup>
+    <>
+      <div className="editor-main">
+        <textarea name="content" placeholder="Post content" />
       </div>
-      <div className="meta">
+      <div className="editor-sidebar">
         <InputGroup label="Title">
           <input type="text" name="title" placeholder="Post title" />
         </InputGroup>
@@ -26,6 +24,6 @@ export const ArticleEditor: React.FC = () => {
           <button type="submit">Create new post</button>
         </InputGroup>
       </div>
-    </div>
+    </>
   );
 };

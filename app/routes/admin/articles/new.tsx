@@ -49,7 +49,7 @@ export const action: ActionFunction = async function ({ request }) {
 
 export default function NewArticlesRoute() {
   return (
-    <Form method="post">
+    <Form className="editor" method="post">
       <ArticleEditor />
     </Form>
   );

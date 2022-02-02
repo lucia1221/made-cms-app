@@ -23,17 +23,16 @@
 .sidebar {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 100px 1fr 100px;
+  grid-template-rows: auto 1fr auto;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-area: sidebar;
   background-color: lightgray;
-  
 }
 
 .sidebar-header {
   grid-area: 1 / 1 / 2 / 2;
-  background-color: blueviolet;
+
   padding: 0rem;
 }
 
@@ -44,8 +43,7 @@
 
 .sidebar-footer {
   grid-area: 3 / 1 / 4 / 2;
-  background-color: blueviolet;
-  padding: 0rem;
+  padding: 10px;
   align-items: center;
   display: flex;
   column-gap: 10px;
@@ -74,4 +72,8 @@
   background-position: center;
   background-size: cover;
   border-radius: 50%;
+}
+
+.profile-name {
+  font-size: 14px;
 }
