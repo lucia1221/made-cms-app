@@ -1,14 +1,17 @@
-import Editor, { createEditorStateWithText } from "@draft-js-plugins/editor";
-import createSideToolbarPlugin from "@draft-js-plugins/side-toolbar";
+import Editor from "@draft-js-plugins/editor";
 import sideToolbarStyles from "@draft-js-plugins/side-toolbar/lib/plugin.css";
-import { DraftHandleValue, EditorState, RichUtils } from "draft-js";
-import createBlockBreakoutPlugin from "draft-js-block-breakout-plugin";
 import draftJsStyles from "draft-js/dist/Draft.css";
-import { useCallback, useState } from "react";
-import { LinksFunction } from "remix";
+import { createRef, useState } from "react";
+import { Form, LinksFunction } from "remix";
 import { InputGroup } from "~/components";
 import { links as tagInputLinks, TagInput } from "../../form/TagInput/TagInput";
 import editorStyles from "./article-editor.css";
+import {
+  getEditorState,
+  getHtml,
+  useKeyCommandHandler,
+  usePlugins,
+} from "./utils";
 
 export let links: LinksFunction = function () {
   return [
@@ -19,41 +22,31 @@ export let links: LinksFunction = function () {
   ];
 };
 
-const sideToolbarPlugin = createSideToolbarPlugin();
-const blockBreakoutPlugin = createBlockBreakoutPlugin();
-const plugins = [sideToolbarPlugin, blockBreakoutPlugin];
-
-export const ArticleEditor: React.FC = () => {
+export const ArticleEditor: React.FunctionComponent = () => {
   let [editorState, setEditorState] = useState(() =>
-    createEditorStateWithText(""),
+    getEditorState("<b>aaa</b>"),
   );
 
-  let handleKeyCommand = useCallback(function (
-    command: string,
-    editorState: EditorState,
-  ): DraftHandleValue {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
-    if (newState) {
-      setEditorState(newState);
-      return "handled";
-    }
+  function injectEditorStateToForm() {
+    inputRef.current!.value = getHtml(editorState);
+  }
 
-    return "not-handled";
-  },
-  []);
+  let inputRef = createRef<HTMLTextAreaElement>();
+  let plugins = usePlugins();
 
   return (
-    <>
+    <Form className="editor" method="post" onSubmit={injectEditorStateToForm}>
       <div className="editor-main">
+        <textarea name="content" ref={inputRef} style={{ display: "none" }} />
         <Editor
           editorKey="new-article-editor"
           editorState={editorState}
           onChange={setEditorState}
-          handleKeyCommand={handleKeyCommand}
+          handleKeyCommand={useKeyCommandHandler(setEditorState)}
           placeholder="Tell your story..."
-          plugins={plugins}
+          plugins={plugins.plugins}
         />
-        <sideToolbarPlugin.SideToolbar />
+        <plugins.SideToolbar />
       </div>
       <div className="editor-sidebar">
         <InputGroup label="Title">
@@ -66,6 +59,6 @@ export const ArticleEditor: React.FC = () => {
           <button type="submit">Create new post</button>
         </InputGroup>
       </div>
-    </>
+    </Form>
   );
 };

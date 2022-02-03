@@ -1,4 +1,4 @@
-import { ActionFunction, Form, LinksFunction, redirect } from "remix";
+import { ActionFunction, LinksFunction, redirect, useFetcher } from "remix";
 import { ClientOnly } from "~/components";
 import { ArticleEditor, links as articleEditorLinks } from "~/components/admin";
 import { Article } from "~/models/article";
@@ -49,11 +49,10 @@ export const action: ActionFunction = async function ({ request }) {
 };
 
 export default function NewArticlesRoute() {
+  let fetcher = useFetcher();
   return (
-    <Form className="editor" method="post">
-      <ClientOnly>
-        <ArticleEditor />
-      </ClientOnly>
-    </Form>
+    <ClientOnly>
+      <ArticleEditor />
+    </ClientOnly>
   );
 }
