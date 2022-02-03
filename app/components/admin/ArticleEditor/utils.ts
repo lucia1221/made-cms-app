@@ -55,7 +55,7 @@ export function useKeyCommandHandler(
  * @returns
  */
 export function getEditorState(value: string): EditorState {
-  return EditorState.createWithContent(convertFromHTML("<b>hello world</b>"));
+  return EditorState.createWithContent(convertFromHTML(""));
 }
 
 /**
