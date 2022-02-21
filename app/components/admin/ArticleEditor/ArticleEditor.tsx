@@ -4,6 +4,7 @@ import draftJsStyles from "draft-js/dist/Draft.css";
 import { createRef, useState } from "react";
 import { Form, LinksFunction } from "remix";
 import { InputGroup } from "~/components";
+import { Article } from "~/models/article";
 import { links as tagInputLinks, TagInput } from "../../form/TagInput/TagInput";
 import editorStyles from "./article-editor.css";
 import {
@@ -22,9 +23,15 @@ export let links: LinksFunction = function () {
   ];
 };
 
-export const ArticleEditor: React.FunctionComponent = () => {
+interface Props {
+  data: Article | null;
+}
+
+export const ArticleEditor: React.FunctionComponent<Props> = (props) => {
+  console.log(props.data?.tags);
+
   let [editorState, setEditorState] = useState(() =>
-    getEditorState("<b>aaa</b>"),
+    getEditorState(props.data?.content || ""),
   );
 
   function injectEditorStateToForm() {
@@ -33,6 +40,10 @@ export const ArticleEditor: React.FunctionComponent = () => {
 
   let inputRef = createRef<HTMLTextAreaElement>();
   let plugins = usePlugins();
+
+  let tags = (props.data?.tags ?? []).map(function (tag) {
+    return tag.name;
+  });
 
   return (
     <Form className="editor" method="post" onSubmit={injectEditorStateToForm}>
@@ -50,13 +61,25 @@ export const ArticleEditor: React.FunctionComponent = () => {
       </div>
       <div className="editor-sidebar">
         <InputGroup label="Title">
-          <input type="text" name="title" placeholder="Post title" />
+          <input
+            type="text"
+            name="title"
+            placeholder="Post title"
+            defaultValue={props.data?.title}
+          />
         </InputGroup>
         <InputGroup>
-          <TagInput name="tags" type="text" placeholder="Add a tag" />
+          <TagInput
+            name="tags"
+            type="text"
+            placeholder="Add a tag"
+            defaultValue={tags}
+          />
         </InputGroup>
         <InputGroup>
-          <button type="submit">Create new post</button>
+          <button type="submit">
+            {props.data == null ? "Create new post" : "Save changes"}
+          </button>
         </InputGroup>
       </div>
     </Form>

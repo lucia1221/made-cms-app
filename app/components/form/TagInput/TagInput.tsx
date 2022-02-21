@@ -17,6 +17,7 @@ export const links: LinksFunction = function () {
 
 interface Props {
   autoFocus?: boolean;
+  defaultValue: string[];
 
   name: string;
   placeholder?: string;
@@ -39,12 +40,12 @@ function isAnyOfKeys(realValue: string) {
   };
 }
 
-export const TagInput: React.FC<Props> = (props) => {
+export const TagInput: React.FC<Props> = function(props) {
   /**
    * Internal state
    */
   const [search, setSearch] = useState("");
-  const [selection, setSelection] = useState<string[]>([]);
+  const [selection, setSelection] = useState<string[]>(props.defaultValue);
 
   const pushToSelection = useCallback(
     (val: string) => {
