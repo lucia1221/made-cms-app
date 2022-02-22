@@ -1,6 +1,7 @@
 import {
   ActionFunction,
   Form,
+  json,
   Link,
   LoaderFunction,
   useLoaderData,
@@ -8,6 +9,7 @@ import {
 import { Article } from "~/models/article";
 import { databaseService } from "~/services/databaseService";
 import { getRange } from "~/utils/paging";
+export { CatchBoundary } from "~/components/CatchBoundary";
 
 interface LoaderData {
   articles: Article[];
@@ -37,6 +39,10 @@ export const loader: LoaderFunction = async function ({
 
   let previousPageUrl = null;
   let nextPageUrl = null;
+
+  if (response.error) {
+    throw json(response.error, response);
+  }
 
   if (page > 1) {
     url.searchParams.set("page", (page - 1).toString());

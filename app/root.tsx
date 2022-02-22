@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
+export { CatchBoundary } from "~/components/CatchBoundary";
 
 export let links: LinksFunction = () => {
   return [
@@ -19,7 +20,7 @@ export let links: LinksFunction = () => {
 };
 
 export const meta: MetaFunction = () => {
-  return { title: "New Remix App" };
+  return { title: "Blog by .made" };
 };
 
 export default function App() {
