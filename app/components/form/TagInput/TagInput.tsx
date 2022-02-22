@@ -40,7 +40,7 @@ function isAnyOfKeys(realValue: string) {
   };
 }
 
-export const TagInput: React.FC<Props> = function(props) {
+export const TagInput: React.FC<Props> = function (props) {
   /**
    * Internal state
    */

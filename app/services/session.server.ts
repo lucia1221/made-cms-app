@@ -1,4 +1,3 @@
-
 import { createCookieSessionStorage } from "remix";
 
 // export the whole sessionStorage object

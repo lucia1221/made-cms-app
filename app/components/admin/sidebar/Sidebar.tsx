@@ -26,7 +26,7 @@ export let Sidebar: React.FC = function () {
 
         <span className="profile-name">Lucia Badinová</span>
 
-        <Link to="/admin/profile" style={{marginLeft: "auto"}}>
+        <Link to="/admin/profile" style={{ marginLeft: "auto" }}>
           <Settings size={16} />
         </Link>
         <Link to="/auth/logout">

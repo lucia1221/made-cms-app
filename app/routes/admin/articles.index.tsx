@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async function ({
   };
 };
 
-export const action: ActionFunction = async function ({request}) {
+export const action: ActionFunction = async function ({ request }) {
   switch (request.method) {
     case "DELETE":
       const form = await request.formData();

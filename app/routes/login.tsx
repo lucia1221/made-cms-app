@@ -1,18 +1,21 @@
-
-import { Form, ActionFunction, LoaderFunction, redirect, useLoaderData } from "remix";
+import {
+  Form,
+  ActionFunction,
+  LoaderFunction,
+  redirect,
+  useLoaderData,
+} from "remix";
 import { authenticator } from "~/services/auth.server";
 
-interface Data{
-  redirectUrl: string
+interface Data {
+  redirectUrl: string;
 }
 
-
 export default function Screen() {
-  let data = useLoaderData<Data>()
+  let data = useLoaderData<Data>();
   return (
     <Form method="post">
-      <input type="hidden" name="redirectUrl" value={data.redirectUrl}>
-      </input>
+      <input type="hidden" name="redirectUrl" value={data.redirectUrl}></input>
       <input type="email" name="email" required />
       <input
         type="password"
@@ -25,33 +28,26 @@ export default function Screen() {
   );
 }
 
-
 export let action: ActionFunction = async ({ request }) => {
- 
-  let form = await request.formData()
+  let form = await request.formData();
   console.log(form);
-  
 
-let redirectUrl = form.get('redirectUrl') as string|null
-  
-  
-  
+  let redirectUrl = form.get("redirectUrl") as string | null;
+
   return await authenticator.authenticate("user-pass", request, {
-    successRedirect: redirectUrl??"/admin",
+    successRedirect: redirectUrl ?? "/admin",
     failureRedirect: "/login",
-
   });
 };
 
-
 export let loader: LoaderFunction = async ({ request }): Promise<Data> => {
-  let url = new URL(request.url)
-  let redirectUrl = url.searchParams.get("redirectTo")
+  let url = new URL(request.url);
+  let redirectUrl = url.searchParams.get("redirectTo");
   console.log(redirectUrl);
 
   let auth = await authenticator.isAuthenticated(request);
 
   return {
-    redirectUrl: redirectUrl??""
-  }
+    redirectUrl: redirectUrl ?? "",
+  };
 };
