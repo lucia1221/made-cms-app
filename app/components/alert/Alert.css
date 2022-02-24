@@ -1,0 +1,32 @@
+.alert-error {
+  color: #f16460;
+  background: #fdeded;
+}
+
+.alert-warning {
+  color: #fea22f;
+  background: #fff4e5;
+}
+
+.alert-success {
+  color: #5fb761;
+  background: #edf7ed;
+}
+
+.alert-info {
+  color: #33b0f6;
+  background: #e5f6fd;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.alert svg {
+  flex-shrink: 0;
+}

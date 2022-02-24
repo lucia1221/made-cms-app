@@ -17,6 +17,7 @@ let style: Record<string, React.CSSProperties> = {
     fontFamily:
       "Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
   },
+  title: { maxWidth: "600px" },
   code: {
     maxWidth: "800px",
     width: "100%",
@@ -42,7 +43,7 @@ export function CatchBoundary(props: Props) {
       message = (
         <>
           <Key size={64} />
-          <h1>
+          <h1 style={style.title}>
             Oops! Looks like you tried to visit a page that you do not have
             access to.
           </h1>
@@ -54,7 +55,7 @@ export function CatchBoundary(props: Props) {
       message = (
         <>
           <Compass size={64} />
-          <h1>
+          <h1 style={style.title}>
             Oops! Looks like you tried to visit a page that does not exist.
           </h1>
         </>
@@ -65,7 +66,7 @@ export function CatchBoundary(props: Props) {
       message = (
         <>
           <Frown size={64} />
-          <h1>Ooops! Something bad happened.</h1>
+          <h1 style={style.title}>Ooops! Something bad happened.</h1>
 
           <b>
             {caught.status} {caught.statusText}

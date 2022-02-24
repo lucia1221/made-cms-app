@@ -1,3 +1,5 @@
+import { Link } from "remix";
+
 export default function UsersRoute() {
-  return "users";
+  return <Link to="invite">Invite User</Link>;
 }

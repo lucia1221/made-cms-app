@@ -29,3 +29,12 @@ export function getUserResetSchema() {
     email: string().email().required(),
   });
 }
+
+/**
+ *  Provide validation schema for user invitation.
+ */
+export function getUserInvitationSchema() {
+  return object({
+    email: string().email().required(),
+  });
+}

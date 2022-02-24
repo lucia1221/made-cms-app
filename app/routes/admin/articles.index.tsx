@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async function ({
   }
 
   return {
-    articles: response.error ? [] : response.data,
+    articles: response.data,
     previousPageUrl: previousPageUrl,
     nextPageUrl: nextPageUrl,
   };

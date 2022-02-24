@@ -1,17 +1,16 @@
-import { ActionFunction, Form } from "remix";
+import { Form } from "remix";
 import { databaseService } from "~/services/databaseService";
+import { ActionDataFunction } from "~/utils/remix";
 import { getUserLoginSchema } from "~/utils/validationSchemas";
 
-export const action: ActionFunction = async function ({ request }) {
+export const action: ActionDataFunction = async function ({ request }) {
   const form = await request.formData();
-  const email = form.get("email")?.toString() ?? "";
-  const password = form.get("password")?.toString() ?? "";
 
   let schema = getUserLoginSchema();
   try {
     let user = await schema.validate({
-      password: form.get("password")?.toString(),
-      email: form.get("email")?.toString(),
+      password: form.get<string>("email") ?? "",
+      email: form.get<string>("password") ?? "",
     });
     let response = await databaseService().auth.signIn(user);
     console.log(response);
