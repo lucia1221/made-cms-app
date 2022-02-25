@@ -1,19 +1,12 @@
-import {
-  Form,
-  json,
-  LinksFunction,
-  useActionData,
-  useCatch,
-  useTransition,
-} from "remix";
+import { Form, json, LinksFunction, useActionData, useTransition } from "remix";
 import { ValidationError } from "yup";
 import { InputGroup } from "~/components";
 import { Alert, links as alertLinks } from "~/components/alert";
-import { CatchBoundary as CommonCatchBoundary } from "~/components/CatchBoundary";
-import { RequestContext } from "~/components/context";
-import { inviteUser } from "~/services/userInvitationService.server";
-import { ActionDataFunction, isValidationErrorResponse } from "~/utils/remix";
-import routeStyle from "~/styles/users.invite.css";
+import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
+import { inviteUser } from "~/services/userService";
+import routeStyle from "~/styles/admin.users.invite.css";
+import { ActionDataFunction } from "~/utils/remix";
+export { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 
 interface ActionData {
   success: true;
@@ -39,6 +32,8 @@ export let action: ActionDataFunction = async function ({ request }) {
   return json({ success: true });
 };
 
+export let CatchBoundary = createFormValidationCatchBoundary(UserInvite);
+
 export default function UserInvite() {
   let transition = useTransition();
   let actionData = useActionData<ActionData>();
@@ -61,11 +56,7 @@ export default function UserInvite() {
         disabled={actionData?.success}
       >
         <InputGroup name="email">
-          <input
-            name="email"
-            type="text"
-            placeholder="Invite user by email"
-          ></input>
+          <input name="email" type="text" placeholder="Invite user by email" />
         </InputGroup>
         <button type="submit">
           {transition.state === "submitting" ? "Sending" : "Send"} invitation
@@ -78,18 +69,4 @@ export default function UserInvite() {
       ) : null}
     </Form>
   );
-}
-
-export function CatchBoundary() {
-  let caugth = useCatch();
-
-  if (isValidationErrorResponse(caugth)) {
-    return (
-      <RequestContext.Provider value={{ validationError: caugth.data }}>
-        <UserInvite />
-      </RequestContext.Provider>
-    );
-  }
-
-  return <CommonCatchBoundary />;
 }

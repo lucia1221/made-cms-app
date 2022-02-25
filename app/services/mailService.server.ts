@@ -31,7 +31,7 @@ type PostMarkResponse = PostMarkSuccessResponse | PostMarkErrorResponse;
 export async function sendInvitationEmail(
   invitation: UserInvitation,
 ): Promise<PostMarkResponse> {
-  let actionUrl = new URL("/invitation", process.env.APP_URL);
+  let actionUrl = new URL("/register", process.env.APP_URL);
   actionUrl.searchParams.set("token", invitation.token);
   actionUrl.searchParams.set("email", invitation.email);
 

@@ -1,4 +1,4 @@
-import { object, ref, string } from "yup";
+import { object, string } from "yup";
 
 /**
  * Provides validation schema for user registration flow.
@@ -6,8 +6,9 @@ import { object, ref, string } from "yup";
 export function getUserRegistrationSchema() {
   return object({
     password: string().required().min(6),
-    confirmPassword: string().oneOf([ref("password")]),
     email: string().email().required(),
+    firstName: string().required(),
+    lastName: string().required(),
   });
 }
 

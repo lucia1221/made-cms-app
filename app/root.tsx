@@ -9,6 +9,7 @@ import {
 } from "remix";
 import type { MetaFunction } from "remix";
 export { CatchBoundary } from "~/components/CatchBoundary";
+import { extractStyles } from "evergreen-ui";
 
 export let links: LinksFunction = () => {
   return [
@@ -24,6 +25,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function App() {
+  const { css, hydrationScript } = extractStyles();
+
   return (
     <html lang="en">
       <head>
@@ -32,11 +35,13 @@ export default function App() {
         <script>var global = globalThis;</script>
         <Meta />
         <Links />
+        <style dangerouslySetInnerHTML={{ __html: css }} />
       </head>
       <body>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
+        {hydrationScript}
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
