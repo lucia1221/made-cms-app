@@ -9,10 +9,10 @@ import {
 } from "remix";
 import { ValidationError } from "yup";
 import { TextInput } from "~/components";
+import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { registerUser, UserRegistrationData } from "~/services/userService";
-import routeStyle from "~/styles/register.css";
 import { ActionDataFunction } from "~/utils/remix";
-import { createFormValidationCatchBoundary } from "./admin/users.invite";
+import routeStyle from "./register.css";
 
 export let links: LinksFunction = function () {
   return [{ rel: "stylesheet", href: routeStyle }];

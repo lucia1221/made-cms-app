@@ -4,8 +4,8 @@ import { InputGroup } from "~/components";
 import { Alert, links as alertLinks } from "~/components/alert";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { inviteUser } from "~/services/userService";
-import routeStyle from "~/styles/admin.users.invite.css";
 import { ActionDataFunction } from "~/utils/remix";
+import routeStyle from "./admin.users.invite.css";
 export { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 
 interface ActionData {

@@ -1,15 +1,26 @@
+import { extractStyles } from "evergreen-ui";
+import type { MetaFunction } from "remix";
 import {
   Links,
   LinksFunction,
   LiveReload,
+  LoaderFunction,
   Meta,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
 } from "remix";
-import type { MetaFunction } from "remix";
 export { CatchBoundary } from "~/components/CatchBoundary";
-import { extractStyles } from "evergreen-ui";
+
+export let loader: LoaderFunction = function ({ request }) {
+  // Remove trailing "/" from URL
+  if (request.url.endsWith("/")) {
+    return redirect(request.url.replace(/\/$/, ""));
+  }
+
+  return null;
+};
 
 export let links: LinksFunction = () => {
   return [

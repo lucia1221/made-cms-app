@@ -1,14 +1,8 @@
-import {
-  LinksFunction,
-  LoaderFunction,
-  NavLink,
-  Outlet,
-  redirect,
-} from "remix";
+import { LinksFunction, LoaderFunction, Outlet, redirect } from "remix";
 import { Sidebar } from "~/components/admin";
 import { authenticator } from "~/services/auth.server";
-import adminStyles from "~/styles/admin.css";
 import adminFormStyles from "~/styles/admin.form.css";
+import adminStyles from "./admin.css";
 
 export const links: LinksFunction = function () {
   return [
@@ -27,6 +21,12 @@ export const links: LinksFunction = function () {
 };
 
 export const loader: LoaderFunction = async function ({ request }) {
+  // Redirect to "Articles" section if user hits "/admin" page.
+  const url = new URL(request.url);
+  if (url.pathname === "/admin") {
+    return redirect("/admin/articles");
+  }
+
   let user = await authenticator.isAuthenticated(request);
 
   if (user === null) {
