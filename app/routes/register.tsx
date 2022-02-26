@@ -1,4 +1,4 @@
-import { Button, Heading, Paragraph } from "evergreen-ui";
+import { Button, Heading, Link, Paragraph } from "evergreen-ui";
 import {
   Form,
   json,
@@ -55,9 +55,11 @@ export default function RegisterRoute() {
         All invited people will be granted access to all sites within your
         organisation
       </Paragraph>
+      <Paragraph>Already A Member?</Paragraph>
+      <Link>Log In</Link>
       <fieldset disabled={transition.state === "submitting"}>
-        <TextInput name="firstName" label="First name" defaultValue="abc" />
-        <TextInput name="lastName" label="Last name" defaultValue="abc" />
+        <TextInput name="firstName" label="First name" />
+        <TextInput name="lastName" label="Last name" />
         <TextInput
           name="email"
           label="E-mail"
@@ -69,7 +71,6 @@ export default function RegisterRoute() {
           label="Password"
           type="password"
           autoComplete="new-password"
-          defaultValue="abcccccccc"
         />
         <input
           name="token"

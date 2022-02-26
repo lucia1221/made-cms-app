@@ -17,7 +17,7 @@ export function getUserRegistrationSchema() {
  */
 export function getUserLoginSchema() {
   return object({
-    password: string().required().min(6),
+    password: string().required(),
     email: string().email().required(),
   });
 }
