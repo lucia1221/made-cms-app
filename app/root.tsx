@@ -1,17 +1,21 @@
 import { extractStyles } from "evergreen-ui";
-import type { MetaFunction } from "remix";
+import React from "react";
 import {
   Links,
   LinksFunction,
   LiveReload,
   LoaderFunction,
   Meta,
+  MetaFunction,
   Outlet,
   redirect,
   Scripts,
   ScrollRestoration,
 } from "remix";
-export { CatchBoundary } from "~/components/CatchBoundary";
+import {
+  CatchBoundary as CommonCatchBoundary,
+  links as catchBoundaryLinks,
+} from "~/components/CatchBoundary";
 
 export let loader: LoaderFunction = function ({ request }) {
   // Remove trailing "/" from URL
@@ -28,6 +32,7 @@ export let links: LinksFunction = () => {
       rel: "stylesheet",
       href: "https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css",
     },
+    ...catchBoundaryLinks(),
   ];
 };
 
@@ -35,7 +40,7 @@ export const meta: MetaFunction = () => {
   return { title: "Blog by .made" };
 };
 
-export default function App() {
+let Document: React.FC = function (props) {
   const { css, hydrationScript } = extractStyles();
 
   return (
@@ -49,7 +54,7 @@ export default function App() {
         <style dangerouslySetInnerHTML={{ __html: css }} />
       </head>
       <body>
-        <Outlet />
+        {props.children}
         <ScrollRestoration />
         <Scripts />
         {hydrationScript}
@@ -57,4 +62,20 @@ export default function App() {
       </body>
     </html>
   );
+};
+
+export default function App() {
+  return (
+    <Document>
+      <Outlet />
+    </Document>
+  );
 }
+
+export let CatchBoundary: React.FC = function () {
+  return (
+    <Document>
+      <CommonCatchBoundary />
+    </Document>
+  );
+};
