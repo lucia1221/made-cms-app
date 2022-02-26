@@ -17,15 +17,6 @@ import {
   links as catchBoundaryLinks,
 } from "~/components/CatchBoundary";
 
-export let loader: LoaderFunction = function ({ request }) {
-  // Remove trailing "/" from URL
-  if (request.url.endsWith("/")) {
-    return redirect(request.url.replace(/\/$/, ""));
-  }
-
-  return null;
-};
-
 export let links: LinksFunction = () => {
   return [
     {

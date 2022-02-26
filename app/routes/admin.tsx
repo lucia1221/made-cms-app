@@ -23,7 +23,7 @@ export const links: LinksFunction = function () {
 export const loader: LoaderFunction = async function ({ request }) {
   // Redirect to "Articles" section if user hits "/admin" page.
   const url = new URL(request.url);
-  if (url.pathname === "/admin") {
+  if (url.pathname.replace(/\/$/, "") === "/admin") {
     return redirect("/admin/articles");
   }
 
