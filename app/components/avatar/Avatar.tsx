@@ -1,5 +1,4 @@
 import { User } from "react-feather";
-import { InputGroup } from "..";
 
 interface Props {
   size: number;
