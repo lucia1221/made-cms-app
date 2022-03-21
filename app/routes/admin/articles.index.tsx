@@ -7,7 +7,7 @@ import {
   useLoaderData,
 } from "remix";
 import { Article } from "~/models/article";
-import { databaseService } from "~/services/databaseService";
+import { databaseService } from "~/services/databaseService.server";
 import { getRange } from "~/utils/paging";
 export { CatchBoundary } from "~/components/CatchBoundary";
 

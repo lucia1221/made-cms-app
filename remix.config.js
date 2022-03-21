@@ -8,5 +8,5 @@ module.exports = {
   publicPath: "/build/",
   serverBuildDirectory: "netlify/functions/server/build",
   devServerPort: 8002,
-  ignoredRouteFiles: [".*", "*.css"],
+  ignoredRouteFiles: [".*", "**/*.css"],
 };

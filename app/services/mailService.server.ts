@@ -12,7 +12,7 @@ const DEFAULT_TEMPLATE_DATA = {
 };
 
 function serverClient(): ServerClient {
-  return new ServerClient(process.env.POSTMARK_TOKEN!);
+  return new ServerClient(process.env.POSTMARK_TOKEN);
 }
 
 interface PostMarkSuccessResponse {
@@ -37,7 +37,7 @@ export async function sendInvitationEmail(
 
   let templatedMessage = new TemplatedMessage(
     NO_REPLY_EMAIL,
-    process.env.POSTMARK_TEMPLATE_USER_INVITATION!,
+    process.env.POSTMARK_TEMPLATE_USER_INVITATION,
     {
       action_url: actionUrl.toString(),
       ...DEFAULT_TEMPLATE_DATA,

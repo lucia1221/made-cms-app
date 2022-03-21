@@ -1,6 +1,6 @@
 import { Link, LoaderFunction, useLoaderData } from "remix";
 import { Article } from "~/models/article";
-import { databaseService } from "~/services/databaseService";
+import { databaseService } from "~/services/databaseService.server";
 
 export const loader: LoaderFunction = async function (): Promise<Article[]> {
   const response = await databaseService()

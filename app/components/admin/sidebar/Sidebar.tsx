@@ -1,7 +1,8 @@
-import { Link, NavLink } from "remix";
 import cx from "classnames";
-import { Users, Book, Settings, LogOut } from "react-feather";
+import { Book, LogOut, Settings, Users } from "react-feather";
+import { Link, NavLink } from "remix";
 import { Avatar } from "~/components";
+import { AUTH_ROUTES } from "~/routes/admin";
 
 export let Sidebar: React.FC = function () {
   return (
@@ -29,7 +30,7 @@ export let Sidebar: React.FC = function () {
         <Link to="/admin/profile" style={{ marginLeft: "auto" }}>
           <Settings size={16} />
         </Link>
-        <Link to="/auth/logout">
+        <Link to={AUTH_ROUTES.logout}>
           <LogOut size={16} />
         </Link>
       </div>

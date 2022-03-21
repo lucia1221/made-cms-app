@@ -1,6 +1,6 @@
 import { json, LoaderFunction } from "remix";
 import { Tag } from "~/models/tag";
-import { databaseService } from "~/services/databaseService";
+import { databaseService } from "~/services/databaseService.server";
 
 export const loader: LoaderFunction = async function ({ request }) {
   const url = new URL(request.url);

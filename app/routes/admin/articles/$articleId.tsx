@@ -12,7 +12,7 @@ import { ArticleEditor, links as articleEditorLinks } from "~/components/admin";
 import { Article } from "~/models/article";
 import { ArticleTag } from "~/models/article_tag";
 import { Tag } from "~/models/tag";
-import { databaseService } from "~/services/databaseService";
+import { databaseService } from "~/services/databaseService.server";
 
 export let links: LinksFunction = function () {
   return [...articleEditorLinks()];

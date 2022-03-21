@@ -7,10 +7,10 @@ export const databaseService = function () {
     return instance;
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL as string;
-  const supabaseKey = process.env.SUPABASE_ANON_KEY as string;
-
-  instance = createClient(supabaseUrl, supabaseKey);
+  instance = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
+  );
 
   return instance;
 };

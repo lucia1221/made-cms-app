@@ -8,7 +8,7 @@ type FormDataExtension = Omit<FormData, "get"> & {
   ): T | null;
 };
 
-interface ActionFunctionArg<Params> {
+export interface ActionFunctionArg<Params = {}> {
   request: Omit<Request, "formData"> & {
     formData: () => Promise<FormDataExtension>;
   };
@@ -24,7 +24,7 @@ export interface ActionDataFunction<Params = {}> {
 }
 
 /**
- * Check if caugth response is "Unprocessable entity" response
+ * Check if caught response is "Unprocessable entity" response
  *
  * @param response
  * @returns

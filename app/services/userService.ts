@@ -1,12 +1,18 @@
-import { User } from "@supabase/supabase-js";
+import { User } from "~/models/user";
 import { UserInvitation } from "~/models/userInvitation";
 import {
   getUserInvitationSchema,
   getUserRegistrationSchema,
 } from "~/utils/validationSchemas";
-import { databaseService } from "./databaseService";
+import { databaseService } from "./databaseService.server";
 import { sendInvitationEmail } from "./mailService.server";
 
+/**
+ * Invite user via email invitation.
+ *
+ * @param email email address
+ * @returns UserInvitation object
+ */
 export async function inviteUser(email: string): Promise<UserInvitation> {
   let schema = getUserInvitationSchema();
 
@@ -39,7 +45,14 @@ export interface UserRegistrationData {
   email: string;
 }
 
-export async function registerUser(
+/**
+ * Create new user account.
+ *
+ * @param token invitation token
+ * @param data user data
+ * @returns User object
+ */
+export async function createUser(
   token: string,
   data: UserRegistrationData,
 ): Promise<User> {
@@ -61,5 +74,10 @@ export async function registerUser(
     .from<User>("users")
     .insert(validatedData)
     .single();
-  return user.data!;
+
+  if (user.error) {
+    throw user;
+  }
+
+  return user.data;
 }

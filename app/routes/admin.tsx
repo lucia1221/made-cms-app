@@ -1,45 +1,41 @@
 import { LinksFunction, LoaderFunction, Outlet, redirect } from "remix";
 import { Sidebar } from "~/components/admin";
-import { authenticator } from "~/services/auth.server";
-import adminFormStyles from "~/styles/admin.form.css";
-import adminStyles from "./admin.css";
+import { isRequestAuthenticated } from "~/services/authService.server";
+
+export const AUTH_ROUTES = {
+  login: '/admin/auth/login',
+  logout: '/admin/auth/login'
+}
+
+const DEFAULT_ROUTE = '/admin/articles';
 
 export const links: LinksFunction = function () {
   return [
-    { rel: "stylesheet", href: adminStyles },
-    { rel: "stylesheet", href: adminFormStyles },
-    {
-      rel: "preconnect",
-      href: "https://fonts.googleapis.com",
-      crossOrigin: "anonymous",
-    },
-    {
-      rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap",
-    },
+    { rel: "stylesheet", href: require("~/styles/admin.form.css") },
+    { rel: "stylesheet", href: require("./admin.css") },
   ];
 };
 
 export const loader: LoaderFunction = async function ({ request }) {
-  // Redirect to "Articles" section if user hits "/admin" page.
   const url = new URL(request.url);
-  if (url.pathname.replace(/\/$/, "") === "/admin") {
-    return redirect("/admin/articles");
+  const isAuthRoute = Object.values(AUTH_ROUTES).some(route => request.url.startsWith(route));
+
+  if (isAuthRoute === false && isRequestAuthenticated(request) === false) {
+    url.pathname = AUTH_ROUTES.login;
+    url.searchParams.set('redirectTo', request.url);
+    console.log('redirect');
+    
+    return redirect(url.toString());
   }
 
-  let user = await authenticator.isAuthenticated(request);
-
-  if (user === null) {
-    let query = new URLSearchParams();
-    query.set("redirectTo", request.url);
-
-    return redirect(`/login?${query.toString()}`);
+  if (url.pathname.replace(/\/$/, "") === "/admin") {
+    return redirect(DEFAULT_ROUTE);
   }
 
   return null;
 };
 
-export default function AdminRoute() {
+export default function AdminRoute() {  
   return (
     <div className="container">
       <div className="sidebar">

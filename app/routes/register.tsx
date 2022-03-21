@@ -10,7 +10,8 @@ import {
 import { ValidationError } from "yup";
 import { TextInput } from "~/components";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
-import { registerUser, UserRegistrationData } from "~/services/userService";
+import { authenticateUser } from "~/services/authService.server";
+import { createUser, UserRegistrationData } from "~/services/userService";
 import { ActionDataFunction } from "~/utils/remix";
 import routeStyle from "./register.css";
 
@@ -29,7 +30,7 @@ export let action: ActionDataFunction = async function ({ request }) {
   };
 
   try {
-    await registerUser(form.get<string>("token") ?? "", user);
+    await createUser(form.get<string>("token") ?? "", user);
   } catch (error) {
     if (error instanceof ValidationError) {
       throw json(error, { status: 422 });
@@ -38,7 +39,19 @@ export let action: ActionDataFunction = async function ({ request }) {
     }
   }
 
-  return redirect("/admin");
+  let authCookie: string = "";
+
+  try {
+    authCookie = await authenticateUser(user.email, user.password);
+  } catch (error) {
+    throw json({}, { status: 500 });
+  }
+
+  return redirect("/admin", {
+    headers: {
+      "set-cookie": authCookie,
+    },
+  });
 };
 
 export const CatchBoundary = createFormValidationCatchBoundary(RegisterRoute);
