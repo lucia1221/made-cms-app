@@ -3,6 +3,7 @@ import { Form, Link, LinksFunction } from "remix";
 import { TextInput } from "~/components";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
+import { AUTH_ROUTES } from "./admin";
 import { createFormValidationCatchBoundary } from "./admin.users.invite";
 
 export let links: LinksFunction = function () {
@@ -40,7 +41,7 @@ export default function LoginRoute() {
         label="Password"
         autoComplete="password"
       />
-      <Link to={"/admin/forgot-password"}>Forgot password</Link>
+      <Link to={AUTH_ROUTES.passwordReset}>Forgot password</Link>
       <Button>Login</Button>
     </Form>
   );

@@ -56,3 +56,32 @@ export async function sendInvitationEmail(
     };
   }
 }
+
+export async function setPasswordResetEmail(
+  invitation: UserInvitation,
+): Promise<PostMarkResponse> {
+  let actionUrl = new URL("/register", process.env.APP_URL);
+  actionUrl.searchParams.set("token", invitation.token);
+  actionUrl.searchParams.set("email", invitation.email);
+
+  let templatedMessage = new TemplatedMessage(
+    NO_REPLY_EMAIL,
+    process.env.POSTMARK_TEMPLATE_USER_INVITATION,
+    {
+      action_url: actionUrl.toString(),
+      ...DEFAULT_TEMPLATE_DATA,
+    },
+    invitation.email,
+  );
+
+  try {
+    let response = await serverClient().sendEmailWithTemplate(templatedMessage);
+    return { data: response, error: null };
+  } catch (error) {
+    return {
+      data: null,
+      error: error as ApiInputError,
+      status: (error as ApiInputError).statusCode,
+    };
+  }
+}

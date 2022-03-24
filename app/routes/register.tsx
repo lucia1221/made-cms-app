@@ -13,6 +13,7 @@ import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { authenticateUser } from "~/services/authService.server";
 import { createUser, UserRegistrationData } from "~/services/userService";
 import { ActionDataFunction } from "~/utils/remix";
+import { AUTH_ROUTES } from "./admin";
 import routeStyle from "./register.css";
 
 export let links: LinksFunction = function () {
@@ -69,7 +70,7 @@ export default function RegisterRoute() {
         organisation
       </Paragraph>
       <Paragraph>Already A Member?</Paragraph>
-      <Link>Log In</Link>
+      <Link to={AUTH_ROUTES.login}>Log In</Link>
       <fieldset disabled={transition.state === "submitting"}>
         <TextInput name="firstName" label="First name" />
         <TextInput name="lastName" label="Last name" />

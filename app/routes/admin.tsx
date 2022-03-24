@@ -4,7 +4,8 @@ import { isRequestAuthenticated } from "~/services/authService.server";
 
 export const AUTH_ROUTES = {
   login: '/admin/auth/login',
-  logout: '/admin/auth/login'
+  logout: '/admin/auth/login',
+  passwordReset: '/admin/auth/password-reset',
 }
 
 const DEFAULT_ROUTE = '/admin/articles';

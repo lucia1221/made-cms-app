@@ -12,6 +12,16 @@ export function getUserRegistrationSchema() {
   });
 }
 
+
+/**
+ * Provides validation schema for password reset.
+ */
+export function getPasswordResetSchema(){
+  return object ({
+    email: string().email().required(),
+  })
+}
+
 /**
  * Provides validation schema for user sign in.
  */

@@ -5,7 +5,7 @@ import {
   getUserRegistrationSchema,
 } from "~/utils/validationSchemas";
 import { databaseService } from "./databaseService.server";
-import { sendInvitationEmail } from "./mailService.server";
+import { sendInvitationEmail, setPasswordResetEmail } from "./mailService.server";
 
 /**
  * Invite user via email invitation.
@@ -36,6 +36,45 @@ export async function inviteUser(email: string): Promise<UserInvitation> {
   }
 
   return dbResponse.data;
+
+}
+
+/**
+ * Reset user password via email invitation.
+ *
+ * @param email email address
+ * @returns UserInvitation object
+ */
+export async function resetPassword(email: string): Promise<UserInvitation> {
+  let schema = getUserInvitationSchema();
+
+  let validatedData = await schema.validate({
+    email: email,
+  });
+
+  let dbResponse = await databaseService()
+    .from<UserInvitation>("user_invitations")
+    .insert(validatedData)
+    .single();
+
+  if (dbResponse.error) {
+    throw dbResponse;
+  }
+
+  let mailResponse = await setPasswordResetEmail(dbResponse.data);
+
+  if (mailResponse.error) {
+    throw mailResponse;
+  }
+
+  return dbResponse.data;
+
+}
+
+
+
+export interface UserResetPasswordData{
+  email: string
 }
 
 export interface UserRegistrationData {
