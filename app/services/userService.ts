@@ -1,43 +1,13 @@
+import { json } from "remix";
 import { User } from "~/models/user";
 import { UserInvitation } from "~/models/userInvitation";
 import {
   getUserInvitationSchema,
-  getUserRegistrationSchema,
+  getUserRegistrationSchema
 } from "~/utils/validationSchemas";
 import { databaseService } from "./databaseService.server";
-import { sendInvitationEmail, setPasswordResetEmail } from "./mailService.server";
-
-/**
- * Invite user via email invitation.
- *
- * @param email email address
- * @returns UserInvitation object
- */
-export async function inviteUser(email: string): Promise<UserInvitation> {
-  let schema = getUserInvitationSchema();
-
-  let validatedData = await schema.validate({
-    email: email,
-  });
-
-  let dbResponse = await databaseService()
-    .from<UserInvitation>("user_invitations")
-    .insert(validatedData)
-    .single();
-
-  if (dbResponse.error) {
-    throw dbResponse;
-  }
-
-  let mailResponse = await sendInvitationEmail(dbResponse.data);
-
-  if (mailResponse.error) {
-    throw mailResponse;
-  }
-
-  return dbResponse.data;
-
-}
+import { setPasswordResetEmail } from "./mailService.server";
+import { claimTransactionalEmail, findTransactionalEmail } from "./transactionalEmailService.server";
 
 /**
  * Reset user password via email invitation.
@@ -99,14 +69,10 @@ export async function createUser(
 
   let validatedData = await schema.validate(data, { abortEarly: false });
 
-  let invitation = await databaseService()
-    .from<UserInvitation>("user_invitations")
-    .update({ claimed: true })
-    .match({ token: token, claimed: false })
-    .single();
+  let invitation = await findTransactionalEmail(token)
 
   if (invitation.error) {
-    throw invitation;
+    throw json(invitation.error, invitation);
   }
 
   let user = await databaseService()
@@ -117,6 +83,8 @@ export async function createUser(
   if (user.error) {
     throw user;
   }
+
+  await claimTransactionalEmail(invitation.data)
 
   return user.data;
 }

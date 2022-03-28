@@ -33,6 +33,15 @@ export function getUserLoginSchema() {
 }
 
 /**
+ *  Provide validation schema generic transactional email entity.
+ */
+export function getTransactionalEmailSchema() {
+  return object({
+    email: string().email().required(),
+  });
+}
+
+/**
  *  Provide validation schema for user invitation.
  */
 export function getUserInvitationSchema() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { useCatch } from "remix";
-import { isValidationErrorResponse } from "~/utils/remix";
+import { ValidationError } from "yup";
 import { RequestContext } from "../context";
 import { CatchBoundary } from "./CatchBoundary";
 
@@ -15,7 +15,7 @@ export let createFormValidationCatchBoundary: FormValidationBoundaryFactoryFunct
     return function FormValidationCatchBoundary() {
       let caugth = useCatch();
 
-      if (isValidationErrorResponse(caugth)) {
+      if (ValidationError.isError(caugth)) {
         return (
           <RequestContext.Provider value={{ validationError: caugth.data }}>
             {React.createElement(component, {})}

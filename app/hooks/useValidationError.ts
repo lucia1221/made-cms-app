@@ -4,6 +4,11 @@ import { RequestContext } from "~/components/context";
 
 export function useValidationError(name: string): undefined | ValidationError {
   let requestContext = useContext(RequestContext);
+
+  if (ValidationError.isError(requestContext.error)) {
+    return findValidationError(name, requestContext.error);
+  }
+  
   return requestContext.validationError
     ? findValidationError(name, requestContext.validationError)
     : undefined;

@@ -1,14 +1,23 @@
-
 import { json, redirect } from "remix";
+import { RequestResponse } from "~/models/RequestResponse";
+import { TransactionalEmail } from "~/models/transactionalEmail";
 import { User } from "~/models/user";
+import { AUTH_ROUTES } from "~/routes/admin";
 import {
     authenticateUser,
     isAuthenticationError,
     logout,
 } from "~/services/authService.server";
 import { databaseService } from "~/services/databaseService.server";
+import {
+    createTransactionalEmail,
+    sendTransactionalEmail,
+} from "~/services/transactionalEmailService.server";
 import { ActionFunctionArg } from "~/utils/remix";
-import { getPasswordResetSchema } from "~/utils/validationSchemas";
+import {
+    getPasswordResetSchema,
+    getTransactionalEmailSchema,
+} from "~/utils/validationSchemas";
 
 export class AuthController {
     public async authenticateUserWithCredentials({
@@ -46,6 +55,53 @@ export class AuthController {
         });
     }
 
+    public async inviteUser({
+        request,
+    }: ActionFunctionArg): Promise<RequestResponse<TransactionalEmail>> {
+        // Read data
+        let form = await request.formData();
+        let email = form.get<string>("email") ?? "";
+
+        // Validate data
+        let schema = getTransactionalEmailSchema();
+
+        try {
+            await schema.validate({ email });
+        } catch (error) {
+            return { data: null, error: error };
+        }
+
+        // Create transactional email entity
+        let emailEntity = await createTransactionalEmail(
+            email,
+            process.env.POSTMARK_TEMPLATE_USER_INVITATION,
+        );
+
+        if (emailEntity.error) {
+            throw json(emailEntity.error);
+        }
+
+        // Prepare template data and send email
+        let actionUrl = new URL(AUTH_ROUTES.register, process.env.APP_URL);
+        actionUrl.searchParams.set("token", emailEntity.data.token);
+        actionUrl.searchParams.set("email", emailEntity.data.email);
+
+        let emailData = {
+            action_url: actionUrl.toString(),
+        };
+
+        let emailResponse = await sendTransactionalEmail(
+            emailEntity.data,
+            emailData,
+        );
+
+        if (emailResponse.error) {
+            throw json(emailResponse.error);
+        }
+
+        return { data: emailEntity.data, error: null };
+    }
+
     public async requestPasswordResetEmail({
         request,
     }: ActionFunctionArg): Promise<Response> {
@@ -66,7 +122,7 @@ export class AuthController {
         if (user.error) {
             throw json(user.error, user);
         }
-user.data.email
+        user.data.email;
         console.log(user);
 
         //   try {

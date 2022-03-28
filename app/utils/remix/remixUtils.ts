@@ -1,6 +1,5 @@
 import { AppLoadContext } from "@remix-run/server-runtime";
-import { ThrownResponse } from "remix";
-import { ValidationError } from "yup";
+import { RequestResponse } from "~/models/RequestResponse";
 
 type FormDataExtension = Omit<FormData, "get"> & {
   get<T extends FormDataEntryValue = FormDataEntryValue>(
@@ -23,14 +22,6 @@ export interface ActionDataFunction<Params = {}> {
   (arg: ActionFunctionArg<Params>): Response | Promise<Response>;
 }
 
-/**
- * Check if caught response is "Unprocessable entity" response
- *
- * @param response
- * @returns
- */
-export function isValidationErrorResponse(
-  response: ThrownResponse,
-): response is ThrownResponse<422, ValidationError> {
-  return response.status === 422;
+export interface ActionDataFunctionNext<D = unknown, E = unknown, Params = {}> {
+  (arg: ActionFunctionArg<Params>): RequestResponse<D, E> | Promise<RequestResponse<D, E>>;
 }

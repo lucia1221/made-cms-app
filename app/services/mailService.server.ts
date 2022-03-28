@@ -1,8 +1,7 @@
-import { UserInvitation } from "~/models/userInvitation";
 import { ServerClient, TemplatedMessage } from "postmark";
 import { ApiInputError } from "postmark/dist/client/errors/Errors";
-
 import { MessageSendingResponse } from "postmark/dist/client/models";
+import { UserInvitation } from "~/models/userInvitation";
 
 const NO_REPLY_EMAIL = "noreply@blog.bymade.sk";
 
@@ -23,39 +22,9 @@ interface PostMarkSuccessResponse {
 interface PostMarkErrorResponse {
   data: null;
   error: ApiInputError;
-  status: number;
 }
 
 type PostMarkResponse = PostMarkSuccessResponse | PostMarkErrorResponse;
-
-export async function sendInvitationEmail(
-  invitation: UserInvitation,
-): Promise<PostMarkResponse> {
-  let actionUrl = new URL("/register", process.env.APP_URL);
-  actionUrl.searchParams.set("token", invitation.token);
-  actionUrl.searchParams.set("email", invitation.email);
-
-  let templatedMessage = new TemplatedMessage(
-    NO_REPLY_EMAIL,
-    process.env.POSTMARK_TEMPLATE_USER_INVITATION,
-    {
-      action_url: actionUrl.toString(),
-      ...DEFAULT_TEMPLATE_DATA,
-    },
-    invitation.email,
-  );
-
-  try {
-    let response = await serverClient().sendEmailWithTemplate(templatedMessage);
-    return { data: response, error: null };
-  } catch (error) {
-    return {
-      data: null,
-      error: error as ApiInputError,
-      status: (error as ApiInputError).statusCode,
-    };
-  }
-}
 
 export async function setPasswordResetEmail(
   invitation: UserInvitation,
@@ -81,7 +50,6 @@ export async function setPasswordResetEmail(
     return {
       data: null,
       error: error as ApiInputError,
-      status: (error as ApiInputError).statusCode,
     };
   }
 }

@@ -5,6 +5,7 @@ import { isRequestAuthenticated } from "~/services/authService.server";
 export const AUTH_ROUTES = {
   login: '/admin/auth/login',
   logout: '/admin/auth/login',
+  register: '/register',
   passwordReset: '/admin/auth/password-reset',
 }
 

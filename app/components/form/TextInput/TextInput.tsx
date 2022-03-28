@@ -1,4 +1,4 @@
-import { TextInputField, TextInputFieldOwnProps } from "evergreen-ui";
+import { TextInputField } from "evergreen-ui";
 import { useValidationError } from "~/hooks/useValidationError";
 
 interface Props extends React.ComponentProps<typeof TextInputField> {
