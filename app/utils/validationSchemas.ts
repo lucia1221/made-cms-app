@@ -33,15 +33,6 @@ export function getUserLoginSchema() {
 }
 
 /**
- * Provides validation schema for user password reset.
- */
-export function getUserResetSchema() {
-  return object({
-    email: string().email().required(),
-  });
-}
-
-/**
  *  Provide validation schema for user invitation.
  */
 export function getUserInvitationSchema() {
