@@ -1,10 +1,10 @@
 import { Button, Heading, Paragraph } from "evergreen-ui";
 import { Form, Link, LinksFunction } from "remix";
 import { TextInput } from "~/components";
+import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
 import { AUTH_ROUTES } from "./admin";
-import { createFormValidationCatchBoundary } from "./admin.users.invite";
 
 export let links: LinksFunction = function () {
   return [{ rel: "stylesheet", href: require("./admin.auth.login.css") }];

@@ -5,15 +5,13 @@ import { Alert, links as alertLinks } from "~/components/alert";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { inviteUser } from "~/services/userService";
 import { ActionDataFunction } from "~/utils/remix";
-import routeStyle from "./admin.users.invite.css";
-export { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 
 interface ActionData {
   success: true;
 }
 
 export let links: LinksFunction = function () {
-  return [{ rel: "stylesheet", href: routeStyle }, ...alertLinks()];
+  return [{ rel: "stylesheet", href: require('./users.invite.css') }, ...alertLinks()];
 };
 
 export let action: ActionDataFunction = async function ({ request }) {
