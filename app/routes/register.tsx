@@ -1,11 +1,11 @@
 import { Button, Heading, Link, Paragraph } from "evergreen-ui";
 import {
-  Form,
-  json,
-  LinksFunction,
-  redirect,
-  useSearchParams,
-  useTransition,
+    Form,
+    json,
+    LinksFunction,
+    redirect,
+    useSearchParams,
+    useTransition,
 } from "remix";
 import { ValidationError } from "yup";
 import { TextInput } from "~/components";
@@ -17,82 +17,82 @@ import { AUTH_ROUTES } from "./admin";
 import routeStyle from "./register.css";
 
 export let links: LinksFunction = function () {
-  return [{ rel: "stylesheet", href: routeStyle }];
+    return [{ rel: "stylesheet", href: routeStyle }];
 };
 
 export let action: ActionDataFunction = async function ({ request }) {
-  let form = await request.formData();
+    let form = await request.formData();
 
-  let user: UserRegistrationData = {
-    firstName: form.get<string>("firstName") ?? "",
-    lastName: form.get<string>("lastName") ?? "",
-    password: form.get<string>("password") ?? "",
-    email: form.get<string>("email") ?? "",
-  };
+    let user: UserRegistrationData = {
+        firstName: form.get<string>("firstName") ?? "",
+        lastName: form.get<string>("lastName") ?? "",
+        password: form.get<string>("password") ?? "",
+        email: form.get<string>("email") ?? "",
+    };
 
-  try {
-    await createUser(form.get<string>("token") ?? "", user);
-  } catch (error) {
-    if (error instanceof ValidationError) {
-      throw json(error, { status: 422 });
-    } else {
-      throw json(error, { status: 400 });
+    try {
+        await createUser(form.get<string>("token") ?? "", user);
+    } catch (error) {
+        if (error instanceof ValidationError) {
+            throw json(error, { status: 422 });
+        } else {
+            throw json(error, { status: 400 });
+        }
     }
-  }
 
-  let authCookie: string = "";
+    let authCookie: string = "";
 
-  try {
-    authCookie = await authenticateUser(user.email, user.password);
-  } catch (error) {
-    throw json({}, { status: 500 });
-  }
+    try {
+        authCookie = await authenticateUser(user.email, user.password);
+    } catch (error) {
+        throw json({}, { status: 500 });
+    }
 
-  return redirect("/admin", {
-    headers: {
-      "set-cookie": authCookie,
-    },
-  });
+    return redirect("/admin", {
+        headers: {
+            "set-cookie": authCookie,
+        },
+    });
 };
 
 export const CatchBoundary = createFormValidationCatchBoundary(RegisterRoute);
 
 export default function RegisterRoute() {
-  let [searchParams] = useSearchParams();
+    let [searchParams] = useSearchParams();
 
-  let transition = useTransition();
+    let transition = useTransition();
 
-  return (
-    <Form method="post" className="register-user">
-      <Heading size={700}>Welcome to the team</Heading>
-      <Paragraph>
-        All invited people will be granted access to all sites within your
-        organisation
-      </Paragraph>
-      <Paragraph>Already A Member?</Paragraph>
-      <Link to={AUTH_ROUTES.login}>Log In</Link>
-      <fieldset disabled={transition.state === "submitting"}>
-        <TextInput name="firstName" label="First name" />
-        <TextInput name="lastName" label="Last name" />
-        <TextInput
-          name="email"
-          label="E-mail"
-          autoComplete="username"
-          defaultValue={searchParams.get("email") ?? ""}
-        />
-        <TextInput
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete="new-password"
-        />
-        <input
-          name="token"
-          defaultValue={searchParams.get("token") ?? ""}
-          type="hidden"
-        />
-        <Button appearance="primary">Register</Button>
-      </fieldset>
-    </Form>
-  );
+    return (
+        <Form method="post" className="register-user">
+            <Heading size={700}>Welcome to the team</Heading>
+            <Paragraph>
+                All invited people will be granted access to all sites within
+                your organisation
+            </Paragraph>
+            <Paragraph>Already A Member?</Paragraph>
+            <Link to={AUTH_ROUTES.login}>Log In</Link>
+            <fieldset disabled={transition.state === "submitting"}>
+                <TextInput name="firstName" label="First name" />
+                <TextInput name="lastName" label="Last name" />
+                <TextInput
+                    name="email"
+                    label="E-mail"
+                    autoComplete="username"
+                    defaultValue={searchParams.get("email") ?? ""}
+                />
+                <TextInput
+                    name="password"
+                    label="Password"
+                    type="password"
+                    autoComplete="new-password"
+                />
+                <input
+                    name="token"
+                    defaultValue={searchParams.get("token") ?? ""}
+                    type="hidden"
+                />
+                <Button appearance="primary">Register</Button>
+            </fieldset>
+        </Form>
+    );
 }

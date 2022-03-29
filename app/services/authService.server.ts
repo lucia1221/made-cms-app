@@ -1,5 +1,8 @@
 import { User } from "~/models/user";
-import { getPasswordResetSchema, getUserLoginSchema } from "~/utils/validationSchemas";
+import {
+    getPasswordResetSchema,
+    getUserLoginSchema,
+} from "~/utils/validationSchemas";
 import { databaseService } from "./databaseService.server";
 import { createJwtCookie } from "./jwtCookieService.server";
 
@@ -84,6 +87,4 @@ export function logout(): string {
     return sessionCookie.serialize({}, { expires: new Date(0) });
 }
 
-export async function passwordResetEmail(email: string) {
-
-}
+export async function passwordResetEmail(email: string) {}

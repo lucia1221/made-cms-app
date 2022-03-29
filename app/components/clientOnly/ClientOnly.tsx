@@ -17,7 +17,7 @@ import { useHydrated } from "~/hooks/useHydrated";
  */
 
 export let ClientOnly: React.FC = (props) => {
-  // (window as any).global = window;
+    // (window as any).global = window;
 
-  return <>{useHydrated() ? props.children : null}</>;
+    return <>{useHydrated() ? props.children : null}</>;
 };

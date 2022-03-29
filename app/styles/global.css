@@ -1,62 +1,62 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;800&display=swap");
 @import url("./button.css");
 :root {
-  --color-primary: #769fcd;
-  --color-secondary: #b9d7ea;
-  --color-ternary: #d6e6f2;
-  --color-background: #f7fbfc;
+    --color-primary: #769fcd;
+    --color-secondary: #b9d7ea;
+    --color-ternary: #d6e6f2;
+    --color-background: #f7fbfc;
 }
 
 body {
-  background-color: white;
+    background-color: white;
 }
 
 .typography {
-  font-family: "Raleway", sans-serif;
-  font-weight: 300;
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
 }
 
 .text-bold {
-  font-family: "Raleway", sans-serif;
-  font-weight: 800;
+    font-family: "Raleway", sans-serif;
+    font-weight: 800;
 }
 
 .text-6xl {
-  font-size: 55px;
+    font-size: 55px;
 }
 
 .text-5xl {
-  font-size: 50px;
+    font-size: 50px;
 }
 
 .text-4xl {
-  font-size: 45px;
+    font-size: 45px;
 }
 
 .text-3xl {
-  font-size: 40px;
+    font-size: 40px;
 }
 
 .text-2xl {
-  font-size: 35px;
+    font-size: 35px;
 }
 
 .text-xl {
-  font-size: 30px;
+    font-size: 30px;
 }
 
 .text-lg {
-  font-size: 25px;
+    font-size: 25px;
 }
 
 .text-md {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .text-sm {
-  font-size: 15px;
+    font-size: 15px;
 }
 
 .text-xs {
-  font-size: 10px;
+    font-size: 10px;
 }

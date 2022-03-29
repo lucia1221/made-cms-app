@@ -1,5 +1,5 @@
 export interface UserInvitation {
-  token: string;
-  email: string;
-  claimed: boolean;
+    token: string;
+    email: string;
+    claimed: boolean;
 }

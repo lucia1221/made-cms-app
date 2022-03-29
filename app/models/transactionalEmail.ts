@@ -3,5 +3,5 @@ export interface TransactionalEmail {
     email: string;
     template: string;
     token: string;
-    claimedAt: null | Date
+    claimedAt: null | Date;
 }

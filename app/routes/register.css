@@ -1,15 +1,15 @@
 .register-user {
-  text-align: center;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 50px;
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 50px;
 }
 
 .register-user fieldset {
-  padding: 0px;
-  border: 0;
-  max-width: 300px;
-  align-items: center;
-  margin: auto;
+    padding: 0px;
+    border: 0;
+    max-width: 300px;
+    align-items: center;
+    margin: auto;
 }
