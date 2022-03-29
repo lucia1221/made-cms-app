@@ -1,18 +1,26 @@
 import { json, redirect } from "remix";
 import { RequestResponse } from "~/models/RequestResponse";
 import { TransactionalEmail } from "~/models/transactionalEmail";
+import { User } from "~/models/user";
+import { UserRegistrationData } from "~/models/user/UserRegistrationData";
 import { AUTH_ROUTES } from "~/routes/admin";
 import {
     authenticateUser,
     isAuthenticationError,
     logout,
 } from "~/services/authService.server";
+import { databaseService } from "~/services/databaseService.server";
 import {
+    claimTransactionalEmail,
     createTransactionalEmail,
+    findTransactionalEmail,
     sendTransactionalEmail,
 } from "~/services/transactionalEmailService.server";
 import { ActionFunctionArg } from "~/utils/remix";
-import { getTransactionalEmailSchema } from "~/utils/validationSchemas";
+import {
+    getTransactionalEmailSchema,
+    getUserRegistrationSchema,
+} from "~/utils/validationSchemas";
 
 export class AuthController {
     public async authenticateUserWithCredentials({
@@ -95,6 +103,59 @@ export class AuthController {
         }
 
         return { data: emailEntity.data, error: null };
+    }
+
+    public async registerUser({
+        request,
+    }: ActionFunctionArg): Promise<Response> {
+        let form = await request.formData();
+
+        // Find transactional email by token
+        let token = form.get<string>("token") ?? "";
+        let emailEntity = await findTransactionalEmail(token);
+
+        if (emailEntity.error) {
+            throw json({ error: emailEntity.error, data: null });
+        }
+
+        // Read and validate user data
+        let schema = getUserRegistrationSchema();
+        let userData: UserRegistrationData;
+
+        try {
+            userData = await schema.validate(
+                {
+                    firstName: form.get<string>("firstName") ?? "",
+                    lastName: form.get<string>("lastName") ?? "",
+                    password: form.get<string>("password") ?? "",
+                    email: form.get<string>("email") ?? "",
+                },
+                { abortEarly: false, stripUnknown: true },
+            );
+        } catch (error) {
+            return json({ data: null, error: error });
+        }
+
+        // Create new user and claim transactional email so that it cannot be used anymore.
+        await databaseService().from<User>("users").insert(userData);
+        await claimTransactionalEmail(emailEntity.data);
+
+        // Log in user immediately
+        let authCookie: string = "";
+        try {
+            authCookie = await authenticateUser(
+                userData.email,
+                userData.password,
+            );
+        } catch (error) {
+            throw json({}, { status: 500 });
+        }
+
+        return redirect("/admin", {
+            headers: {
+                "set-cookie": authCookie,
+            },
+        });
     }
 
     public async requestPasswordResetEmail({

@@ -6,7 +6,7 @@ import { RequestContext } from "~/components/context";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { RequestResponse } from "~/models/RequestResponse";
 import { TransactionalEmail } from "~/models/transactionalEmail";
-import { ActionDataFunctionNext } from "~/utils/remix";
+import { ActionDataFunction } from "~/utils/remix";
 
 export let links: LinksFunction = function () {
     return [
@@ -15,7 +15,7 @@ export let links: LinksFunction = function () {
     ];
 };
 
-export let action: ActionDataFunctionNext<TransactionalEmail> = async function (
+export let action: ActionDataFunction<TransactionalEmail> = async function (
     args,
 ) {
     let controller = new AuthController();

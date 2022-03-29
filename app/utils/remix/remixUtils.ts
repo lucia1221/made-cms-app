@@ -18,11 +18,7 @@ export interface ActionFunctionArg<Params = {}> {
 /**
  * Action function with guarded return type.
  */
-export interface ActionDataFunction<Params = {}> {
-    (arg: ActionFunctionArg<Params>): Response | Promise<Response>;
-}
-
-export interface ActionDataFunctionNext<D = unknown, E = unknown, Params = {}> {
+export interface ActionDataFunction<D = unknown, E = unknown, Params = {}> {
     (arg: ActionFunctionArg<Params>):
         | RequestResponse<D, E>
         | Promise<RequestResponse<D, E>>;

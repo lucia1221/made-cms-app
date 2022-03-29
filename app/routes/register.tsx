@@ -1,17 +1,17 @@
-import { Button, Heading, Link, Paragraph } from "evergreen-ui";
+import { Button, Heading, Paragraph } from "evergreen-ui";
 import {
     Form,
-    json,
+    Link,
     LinksFunction,
-    redirect,
+    useActionData,
     useSearchParams,
     useTransition,
 } from "remix";
-import { ValidationError } from "yup";
 import { TextInput } from "~/components";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
-import { authenticateUser } from "~/services/authService.server";
-import { createUser, UserRegistrationData } from "~/services/userService";
+import { RequestContext } from "~/components/context";
+import { AuthController } from "~/controllers/admin/AuthController";
+import { RequestResponse } from "~/models/RequestResponse";
 import { ActionDataFunction } from "~/utils/remix";
 import { AUTH_ROUTES } from "./admin";
 import routeStyle from "./register.css";
@@ -20,79 +20,74 @@ export let links: LinksFunction = function () {
     return [{ rel: "stylesheet", href: routeStyle }];
 };
 
-export let action: ActionDataFunction = async function ({ request }) {
-    let form = await request.formData();
+export let action: ActionDataFunction = async function (args) {
+    const controller = new AuthController();
 
-    let user: UserRegistrationData = {
-        firstName: form.get<string>("firstName") ?? "",
-        lastName: form.get<string>("lastName") ?? "",
-        password: form.get<string>("password") ?? "",
-        email: form.get<string>("email") ?? "",
-    };
-
-    try {
-        await createUser(form.get<string>("token") ?? "", user);
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            throw json(error, { status: 422 });
-        } else {
-            throw json(error, { status: 400 });
-        }
-    }
-
-    let authCookie: string = "";
-
-    try {
-        authCookie = await authenticateUser(user.email, user.password);
-    } catch (error) {
-        throw json({}, { status: 500 });
-    }
-
-    return redirect("/admin", {
-        headers: {
-            "set-cookie": authCookie,
-        },
-    });
+    return controller.registerUser(args);
 };
 
 export const CatchBoundary = createFormValidationCatchBoundary(RegisterRoute);
 
 export default function RegisterRoute() {
     let [searchParams] = useSearchParams();
-
+    let actionData = useActionData<RequestResponse>();
     let transition = useTransition();
 
     return (
-        <Form method="post" className="register-user">
-            <Heading size={700}>Welcome to the team</Heading>
-            <Paragraph>
-                All invited people will be granted access to all sites within
-                your organisation
-            </Paragraph>
-            <Paragraph>Already A Member?</Paragraph>
-            <Link to={AUTH_ROUTES.login}>Log In</Link>
-            <fieldset disabled={transition.state === "submitting"}>
-                <TextInput name="firstName" label="First name" />
-                <TextInput name="lastName" label="Last name" />
-                <TextInput
-                    name="email"
-                    label="E-mail"
-                    autoComplete="username"
-                    defaultValue={searchParams.get("email") ?? ""}
-                />
-                <TextInput
-                    name="password"
-                    label="Password"
-                    type="password"
-                    autoComplete="new-password"
-                />
-                <input
-                    name="token"
-                    defaultValue={searchParams.get("token") ?? ""}
-                    type="hidden"
-                />
-                <Button appearance="primary">Register</Button>
-            </fieldset>
-        </Form>
+        <RequestContext.Provider value={{ error: actionData?.error }}>
+            <Form method="post" className="register-user">
+                <Heading size={700}>Welcome to the team</Heading>
+                <Paragraph>
+                    All invited people will be granted access to all sites
+                    within your organisation
+                </Paragraph>
+                <Paragraph>Already A Member?</Paragraph>
+                <Link to={AUTH_ROUTES.login}>Log In</Link>
+                <fieldset
+                    disabled={
+                        transition.state === "submitting" || !!actionData?.data
+                    }
+                >
+                    <TextInput
+                        name="firstName"
+                        label="First name"
+                        defaultValue={transition.submission?.formData.get(
+                            "firstName",
+                        )}
+                    />
+                    <TextInput
+                        name="lastName"
+                        label="Last name"
+                        defaultValue={transition.submission?.formData.get(
+                            "lastName",
+                        )}
+                    />
+                    <TextInput
+                        name="email"
+                        label="E-mail"
+                        autoComplete="username"
+                        defaultValue={
+                            searchParams.get("email") ??
+                            transition.submission?.formData.get("email")
+                        }
+                    />
+                    <TextInput
+                        name="password"
+                        label="Password"
+                        type="password"
+                        autoComplete="new-password"
+                    />
+                    <TextInput
+                        type="hidden"
+                        name="token"
+                        defaultValue={
+                            searchParams.get("token") ??
+                            transition.submission?.formData.get("token")
+                        }
+                    />
+                    <Button appearance="primary">Register</Button>
+                </fieldset>
+            </Form>
+        </RequestContext.Provider>
     );
 }
