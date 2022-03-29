@@ -1,23 +1,18 @@
 import { json, redirect } from "remix";
 import { RequestResponse } from "~/models/RequestResponse";
 import { TransactionalEmail } from "~/models/transactionalEmail";
-import { User } from "~/models/user";
 import { AUTH_ROUTES } from "~/routes/admin";
 import {
     authenticateUser,
     isAuthenticationError,
     logout,
 } from "~/services/authService.server";
-import { databaseService } from "~/services/databaseService.server";
 import {
     createTransactionalEmail,
     sendTransactionalEmail,
 } from "~/services/transactionalEmailService.server";
 import { ActionFunctionArg } from "~/utils/remix";
-import {
-    getPasswordResetSchema,
-    getTransactionalEmailSchema,
-} from "~/utils/validationSchemas";
+import { getTransactionalEmailSchema } from "~/utils/validationSchemas";
 
 export class AuthController {
     public async authenticateUserWithCredentials({
@@ -104,37 +99,44 @@ export class AuthController {
 
     public async requestPasswordResetEmail({
         request,
-    }: ActionFunctionArg): Promise<Response> {
+    }: ActionFunctionArg): Promise<RequestResponse<TransactionalEmail>> {
         let form = await request.formData();
-        console.log(form);
-        let schema = getPasswordResetSchema();
-        let email = form.get("email");
-        console.log(email);
+        let email = form.get<string>("email") ?? "";
 
-        await schema.validate({ email: email }, { abortEarly: false });
+        let schema = getTransactionalEmailSchema();
 
-        let user = await databaseService()
-            .from<User>("users")
-            .select()
-            .match({ email: email })
-            .single();
-
-        if (user.error) {
-            throw json(user.error, user);
+        try {
+            await schema.validate({ email });
+        } catch (error) {
+            return { data: null, error: error };
         }
-        user.data.email;
-        console.log(user);
 
-        //   try {
-        //     await passwordResetEmail(form.get<string>("email") ?? "", );
-        //   } catch (error) {
-        //     if (error instanceof ValidationError) {
-        //       throw json(error, { status: 422 });
-        //     } else {
-        //       throw json(error, { status: 400 });
-        //     }
-        //   }
+        let emailEntity = await createTransactionalEmail(
+            email,
+            process.env.POSTMARK_TEMPLATE_PASSWORD_RESET,
+        );
 
-        return new Response();
+        if (emailEntity.error) {
+            throw json(emailEntity.error);
+        }
+
+        let actionUrl = new URL(AUTH_ROUTES.passwordReset, process.env.APP_URL);
+        actionUrl.searchParams.set("token", emailEntity.data.token);
+        actionUrl.searchParams.set("email", emailEntity.data.email);
+
+        let emailData = {
+            action_url: actionUrl.toString(),
+        };
+
+        let emailResponse = await sendTransactionalEmail(
+            emailEntity.data,
+            emailData,
+        );
+
+        if (emailResponse.error) {
+            throw json(emailResponse.error);
+        }
+
+        return { data: emailEntity.data, error: null };
     }
 }

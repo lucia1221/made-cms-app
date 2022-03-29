@@ -1,15 +1,17 @@
 import { Button, Heading, Paragraph } from "evergreen-ui";
-import { Form, json, LinksFunction, redirect, useSearchParams } from "remix";
-import { ValidationError } from "yup";
-import { TextInput } from "~/components";
-import { passwordResetEmail } from "~/services/authService.server";
 import {
-    UserRegistrationData,
-    UserResetPasswordData,
-} from "~/services/userService";
-import { ActionDataFunction } from "~/utils/remix";
+    Form,
+    LinksFunction,
+    useActionData,
+    useSearchParams,
+    useTransition,
+} from "remix";
+import { TextInput } from "~/components";
+import { Alert } from "~/components/alert";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
+import { RequestContext } from "~/components/context";
 import { AuthController } from "~/controllers/admin/AuthController";
+import { ActionDataFunction } from "~/utils/remix";
 
 export let links: LinksFunction = function () {
     return [
@@ -27,25 +29,39 @@ export const CatchBoundary =
 
 export default function ForgotPasswordRoute() {
     let [searchParams] = useSearchParams();
+    let actionData = useActionData();
+    let transition = useTransition();
 
     return (
-        <Form method="post" className="reset-form">
-            <Heading size={700}>Password reset</Heading>
-            <Paragraph>
-                Send a link to your email to reset your password.
-            </Paragraph>
-            <TextInput
-                name="email"
-                type="email"
-                label="Email address"
-                autoComplete="email"
-            />
-            <input
-                name="token"
-                defaultValue={searchParams.get("token") ?? ""}
-                type="hidden"
-            />
-            <Button>Reset password</Button>
-        </Form>
+        <RequestContext.Provider value={{ error: actionData?.error }}>
+            <Form method="post" className="reset-form">
+                <Heading size={700}>Password reset</Heading>
+                <Paragraph>
+                    Send a link to your email to reset your password.
+                </Paragraph>
+
+                <fieldset
+                    disabled={!!actionData?.data || transition.state !== "idle"}
+                >
+                    <TextInput
+                        name="email"
+                        type="email"
+                        label="Email address"
+                        autoComplete="email"
+                    />
+                    <input
+                        name="token"
+                        defaultValue={searchParams.get("token") ?? ""}
+                        type="hidden"
+                    />
+                    <Button>Reset password</Button>
+                </fieldset>
+                {actionData?.data ? (
+                    <Alert type="success" style={{ marginTop: 20 }}>
+                        Password reset successfully.
+                    </Alert>
+                ) : null}
+            </Form>
+        </RequestContext.Provider>
     );
 }
