@@ -1,4 +1,4 @@
-import { Button, Heading, Paragraph } from "evergreen-ui";
+import { Heading, Paragraph } from "evergreen-ui";
 import {
     Form,
     Link,
@@ -15,9 +15,18 @@ import { RequestResponse } from "~/models/RequestResponse";
 import { ActionDataFunction } from "~/utils/remix";
 import { AUTH_ROUTES } from "./admin";
 import routeStyle from "./register.css";
+import { Button, links as buttonLinks } from "~/components/button";
+import {
+    ButtonGroup,
+    links as buttonGroupLinks,
+} from "~/components/buttonGroup";
 
 export let links: LinksFunction = function () {
-    return [{ rel: "stylesheet", href: routeStyle }];
+    return [
+        { rel: "stylesheet", href: routeStyle },
+        ...buttonGroupLinks(),
+        ...buttonLinks(),
+    ];
 };
 
 export let action: ActionDataFunction = async function (args) {
@@ -85,7 +94,9 @@ export default function RegisterRoute() {
                             transition.submission?.formData.get("token")
                         }
                     />
-                    <Button appearance="primary">Register</Button>
+                    <ButtonGroup alignChildren="end">
+                        <Button appearance="primary">Register</Button>
+                    </ButtonGroup>
                 </fieldset>
             </Form>
         </RequestContext.Provider>

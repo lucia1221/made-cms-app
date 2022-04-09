@@ -1,13 +1,22 @@
-import { Button, Heading, Paragraph } from "evergreen-ui";
+import { Heading, Paragraph } from "evergreen-ui";
 import { Form, Link, LinksFunction } from "remix";
 import { TextInput } from "~/components";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
 import { AUTH_ROUTES } from "./admin";
+import { Button, links as buttonLinks } from "~/components/button";
+import {
+    ButtonGroup,
+    links as buttonGroupLinks,
+} from "~/components/buttonGroup";
 
 export let links: LinksFunction = function () {
-    return [{ rel: "stylesheet", href: require("./admin.auth.login.css") }];
+    return [
+        { rel: "stylesheet", href: require("./admin.auth.login.css") },
+        ...buttonGroupLinks(),
+        ...buttonLinks(),
+    ];
 };
 
 export const action: ActionDataFunction = async function (args) {
@@ -42,7 +51,9 @@ export default function LoginRoute() {
                 autoComplete="password"
             />
             <Link to={AUTH_ROUTES.passwordReset}>Forgot password</Link>
-            <Button>Login</Button>
+            <ButtonGroup alignChildren="end">
+                <Button appearance="primary">Login</Button>
+            </ButtonGroup>
         </Form>
     );
 }

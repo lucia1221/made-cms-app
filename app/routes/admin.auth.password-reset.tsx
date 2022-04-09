@@ -1,4 +1,4 @@
-import { Button, Heading, Paragraph } from "evergreen-ui";
+import { Heading, Paragraph } from "evergreen-ui";
 import {
     Form,
     LinksFunction,
@@ -12,10 +12,17 @@ import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { RequestContext } from "~/components/context";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
+import { Button, links as buttonLinks } from "~/components/button";
+import {
+    ButtonGroup,
+    links as buttonGroupLinks,
+} from "~/components/buttonGroup";
 
 export let links: LinksFunction = function () {
     return [
         { rel: "stylesheet", href: require("./admin.auth.password-reset.css") },
+        ...buttonGroupLinks(),
+        ...buttonLinks(),
     ];
 };
 
@@ -54,7 +61,9 @@ export default function ForgotPasswordRoute() {
                         defaultValue={searchParams.get("token") ?? ""}
                         type="hidden"
                     />
-                    <Button>Reset password</Button>
+                    <ButtonGroup alignChildren="end">
+                        <Button appearance="primary">Reset password</Button>
+                    </ButtonGroup>
                 </fieldset>
                 {actionData?.data ? (
                     <Alert type="success" style={{ marginTop: 20 }}>
