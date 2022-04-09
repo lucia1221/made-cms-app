@@ -1,0 +1,83 @@
+:root {
+    --text-size-3xl: 2.2em;
+    --text-size-2xl: 1.8em;
+    --text-size-xl: 1.5em;
+    --text-size-lg: 1.2em;
+    --text-size-base: 1em;
+    --text-size-md: 0.8em;
+    --text-size-sm: 0.6em;
+}
+
+/* Sizing */
+.text-3xl {
+    font-size: var(--text-size-3xl);
+}
+
+.text-2xl {
+    font-size: var(--text-size-2xl);
+}
+
+.text-xl {
+    font-size: var(--text-size-xl);
+}
+
+.text-lg {
+    font-size: var(--text-size-lg);
+}
+
+.text-base {
+    font-size: var(--text-size-base);
+}
+
+.text-md {
+    font-size: var(--text-size-md);
+}
+
+.text-sm {
+    font-size: var(--text-size-sm);
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat";
+    margin: 0;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: var(--text-size-3xl);
+}
+
+h2 {
+    font-size: var(--text-size-2xl);
+}
+
+h3 {
+    font-size: var(--text-size-xl);
+}
+
+h4 {
+    font-size: var(--text-size-lg);
+}
+
+h5 {
+    font-size: var(--text-size-base);
+}
+
+h6 {
+    font-size: var(--text-size-md);
+}
+
+/* Paragraph */
+p {
+    font-size: var(--text-size-base);
+}
+
+span {
+    font-size: var(--text-size-base);
+}
