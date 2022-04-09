@@ -1,17 +1,32 @@
-import { TextInputField } from "evergreen-ui";
-import { useValidationError } from "~/hooks/useValidationError";
+import { LinksFunction } from "remix";
+import { links as textLinks } from "~/components/text";
+import {
+    CompositeField,
+    CompositeFieldProps,
+} from "../CompositeField/CompositeField";
 
-interface Props extends React.ComponentProps<typeof TextInputField> {
+interface Props extends React.ComponentProps<"input">, CompositeFieldProps {
     name: string;
 }
 
-export let TextInput: React.FC<Props> = function (props) {
-    let validationError = useValidationError(props.name);
+export let links: LinksFunction = function () {
+    return [
+        { rel: "stylesheet", href: require("../Form.css") },
+        { rel: "stylesheet", href: require("./TextInput.css") },
+        ...textLinks(),
+    ];
+};
 
+export let TextInput: React.FC<Props> = function ({
+    block,
+    className,
+    label,
+    name,
+    ...props
+}) {
     return (
-        <TextInputField
-            {...props}
-            validationMessage={validationError?.message}
-        />
+        <CompositeField name={name} label={label} block={block}>
+            <input {...props} name={name} className="form-field-input" />
+        </CompositeField>
     );
 };

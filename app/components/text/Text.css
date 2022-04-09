@@ -37,6 +37,16 @@
     font-size: var(--text-size-sm);
 }
 
+/* Color */
+.color-error {
+    color: var(--color-error);
+}
+
+/* Weights */
+.weight-bold {
+    font-weight: 700;
+}
+
 /* Headings */
 h1,
 h2,

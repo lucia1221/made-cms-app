@@ -12,10 +12,7 @@ export const AUTH_ROUTES = {
 const DEFAULT_ROUTE = "/admin/articles";
 
 export const links: LinksFunction = function () {
-    return [
-        { rel: "stylesheet", href: require("~/styles/admin.form.css") },
-        { rel: "stylesheet", href: require("./admin.css") },
-    ];
+    return [{ rel: "stylesheet", href: require("./admin.css") }];
 };
 
 export const loader: LoaderFunction = async function ({ request }) {

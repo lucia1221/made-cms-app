@@ -6,7 +6,7 @@ import {
     useSearchParams,
     useTransition,
 } from "remix";
-import { TextInput } from "~/components";
+import { TextInput } from "~/components/form/TextInput";
 import { Alert } from "~/components/alert";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { RequestContext } from "~/components/context";

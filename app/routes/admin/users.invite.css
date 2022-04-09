@@ -5,22 +5,11 @@
     margin-right: auto;
 }
 
-.input-group {
-    display: flex;
-    flex-direction: column;
-}
-
 .invitation-form-elements {
     display: flex;
     flex-direction: row;
-    align-items: baseline;
+    align-items: start;
     gap: 10px;
-    padding: 0;
-    border: 0;
-}
-
-.invitation-form-elements .input-group {
-    flex-grow: 1;
 }
 
 .inv-text {

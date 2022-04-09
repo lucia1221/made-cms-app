@@ -41,11 +41,13 @@ class JwtCookie<T = any> {
     }
 
     parse(cookieHeaderValue: string | null): null | T {
-        const token = (cookieHeaderValue ?? "")
-            .split(";")
-            .map((val) => val.trim().split("="))
-            .find((val) => val.at(0) === this.name)
-            ?.at(1);
+        const match =
+            (cookieHeaderValue ?? "")
+                .split(";")
+                .map((val) => val.trim().split("="))
+                .find(([key]) => key === this.name) ?? [];
+
+        const [_, token] = match;
 
         if (!token) {
             return null;

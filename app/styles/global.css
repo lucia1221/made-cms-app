@@ -3,6 +3,8 @@
     --color-primary: #f473b9;
     --color-secondary: #ffbde6;
     --color-ternary: #ffddee;
+
+    --color-error: rgb(209, 67, 67);
 }
 
 * {

@@ -1,6 +1,6 @@
 import { Heading, Paragraph } from "evergreen-ui";
 import { Form, Link, LinksFunction } from "remix";
-import { TextInput } from "~/components";
+import { TextInput } from "~/components/form/TextInput";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
