@@ -1,0 +1,50 @@
+:root {
+    --button-primary-background: var(--color-brand);
+    --button-primary-color: white;
+
+    --button-default-background: #ddd;
+    --button-default-color: #666;
+
+    --button-text-background: transparent;
+    --button-text-color: #999;
+
+    --button-disabled-background: #e8e8e8;
+    --button-disabled-color: #bbb;
+}
+
+button {
+    appearance: none;
+    border-radius: 4px;
+    border: 0;
+    font-family: "Montserrat";
+    font-size: 1rem;
+    font-weight: 700;
+    min-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+button[disabled] {
+    background: var(--button-disabled-background);
+    color: var(--button-disabled-color);
+    cursor: not-allowed;
+    border: 0;
+}
+
+.button-primary {
+    background: var(--button-primary-background);
+    color: var(--button-primary-color);
+}
+
+.button-default {
+    background-color: var(--button-default-background);
+    color: var(--button-default-color);
+}
+
+.button-text {
+    background-color: var(--button-text-background);
+    color: var(--button-text-color);
+    border: 1px solid var(--button-text-color);
+}

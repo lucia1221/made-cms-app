@@ -4,11 +4,9 @@ import {
     Links,
     LinksFunction,
     LiveReload,
-    LoaderFunction,
     Meta,
     MetaFunction,
     Outlet,
-    redirect,
     Scripts,
     ScrollRestoration,
 } from "remix";
@@ -30,7 +28,11 @@ export let links: LinksFunction = () => {
         },
         {
             rel: "stylesheet",
-            href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap",
+            href: "https://fonts.googleapis.com/css2?family=Lato&family=Montserrat:wght@500;700&display=swap",
+        },
+        {
+            rel: "stylesheet",
+            href: require("~/styles/global.css"),
         },
         ...catchBoundaryLinks(),
     ];
