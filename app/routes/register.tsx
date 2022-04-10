@@ -18,9 +18,7 @@ import {
     ButtonGroup,
     links as buttonGroupLinks,
 } from "~/components/buttonGroup";
-import { Heading } from "~/components/heading/Heading";
-import { Paragraph } from "~/components/paragraph/Paragraph";
-import { Text } from "~/components/text/Text";
+import * as Text from "~/components/text";
 import {
     TextInput,
     links as textInputLinks,
@@ -32,6 +30,7 @@ export let links: LinksFunction = function () {
         ...buttonGroupLinks(),
         ...buttonLinks(),
         ...textInputLinks(),
+        ...Text.links(),
     ];
 };
 
@@ -51,15 +50,14 @@ export default function RegisterRoute() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="register-user">
-                <Heading level="h2">Welcome to the team</Heading>
+                <Text.Heading level="h2">Welcome to the team</Text.Heading>
 
-                <Text as="span" size="md">
-                    {" "}
+                <Text.Text as="span" size="md">
                     All invited people will be granted access to all sites
                     within your organisation
-                </Text>
+                </Text.Text>
 
-                <Paragraph>Already A Member?</Paragraph>
+                <Text.Paragraph>Already A Member?</Text.Paragraph>
                 <Link to={AUTH_ROUTES.login}>Log In</Link>
                 <fieldset
                     disabled={

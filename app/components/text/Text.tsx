@@ -1,6 +1,5 @@
 import cx from "classnames";
 import React from "react";
-import { LinksFunction } from "remix";
 
 interface SpanProps extends React.ComponentProps<"span"> {
     as: "span";
@@ -26,10 +25,6 @@ type SharedProps = {
     color?: "error";
     weight?: "light" | "normal" | "bold";
 };
-
-export let links: LinksFunction = () => [
-    { rel: "stylesheet", href: require("./Text.css") },
-];
 
 export let Text: React.FC<Props & SharedProps> = ({
     as,

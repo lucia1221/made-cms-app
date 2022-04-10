@@ -4,8 +4,7 @@ import {
     links as textInputLinks,
 } from "~/components/form/TextInput";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
-import { Heading } from "~/components/heading/Heading";
-import { Paragraph } from "~/components/paragraph/Paragraph";
+import * as Text from "~/components/text";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
 import { AUTH_ROUTES } from "./admin";
@@ -21,6 +20,7 @@ export let links: LinksFunction = function () {
         ...buttonGroupLinks(),
         ...buttonLinks(),
         ...textInputLinks(),
+        ...Text.links(),
     ];
 };
 
@@ -41,10 +41,10 @@ export const CatchBoundary = createFormValidationCatchBoundary(LoginRoute);
 export default function LoginRoute() {
     return (
         <Form method="post" className="login-form">
-            <Heading level="h2">Welcome back!</Heading>
-            <Paragraph className="subtitle">
+            <Text.Heading level="h2">Welcome back!</Text.Heading>
+            <Text.Paragraph className="subtitle">
                 Please enter your details.
-            </Paragraph>
+            </Text.Paragraph>
             <TextInput
                 name="email"
                 type="email"
@@ -57,8 +57,15 @@ export default function LoginRoute() {
                 label="Password"
                 autoComplete="password"
             />
-            <Link to={AUTH_ROUTES.passwordReset}>Forgot password</Link>
+
             <ButtonGroup alignChildren="center">
+                <Button
+                    appearance="link"
+                    formMethod="get"
+                    formAction={AUTH_ROUTES.passwordReset}
+                >
+                    Forgot password
+                </Button>
                 <Button appearance="primary">Login</Button>
             </ButtonGroup>
         </Form>

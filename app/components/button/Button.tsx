@@ -2,7 +2,7 @@ import cx from "classnames";
 import { LinksFunction } from "remix";
 
 interface Props extends React.ComponentProps<"button"> {
-    appearance: "primary" | "default" | "text";
+    appearance: "primary" | "default" | "link";
 }
 
 export let links: LinksFunction = () => [

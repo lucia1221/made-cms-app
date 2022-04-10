@@ -7,8 +7,7 @@ import {
     TextInput,
     links as textInputLinks,
 } from "~/components/form/TextInput";
-import { Heading } from "~/components/heading";
-import { Paragraph } from "~/components/paragraph";
+import * as Text from "~/components/text";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { RequestResponse } from "~/models/RequestResponse";
 import { TransactionalEmail } from "~/models/transactionalEmail";
@@ -20,6 +19,7 @@ export let links: LinksFunction = function () {
         ...alertLinks(),
         ...buttonLinks(),
         ...textInputLinks(),
+        ...Text.links(),
     ];
 };
 
@@ -40,12 +40,12 @@ export default function UserInvite() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="invitation-form">
-                <Heading level="h1">Invite people</Heading>
+                <Text.Heading level="h1">Invite people</Text.Heading>
 
-                <Paragraph className="subtitle">
+                <Text.Paragraph className="subtitle">
                     All invited people will be granted access to all sites
                     within your organisation.
-                </Paragraph>
+                </Text.Paragraph>
 
                 <fieldset
                     className="invitation-form-elements"

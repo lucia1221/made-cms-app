@@ -5,8 +5,8 @@
     --button-default-background: #ddd;
     --button-default-color: #666;
 
-    --button-text-background: transparent;
-    --button-text-color: #999;
+    --button-link-background: transparent;
+    --button-link-color: var(--color-brand);
 
     --button-disabled-background: #e8e8e8;
     --button-disabled-color: #bbb;
@@ -18,11 +18,9 @@ button {
     border: 0;
     font-family: "Montserrat";
     font-size: 1rem;
-    font-weight: 700;
     min-height: 40px;
     padding-left: 20px;
     padding-right: 20px;
-    text-transform: uppercase;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -44,8 +42,8 @@ button[disabled] {
     color: var(--button-default-color);
 }
 
-.button-text {
-    background-color: var(--button-text-background);
-    color: var(--button-text-color);
-    border: 1px solid var(--button-text-color);
+.button-link {
+    background-color: var(--button-link-background);
+    color: var(--button-link-color);
+    text-decoration: underline;
 }

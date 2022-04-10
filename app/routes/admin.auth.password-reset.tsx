@@ -19,8 +19,7 @@ import {
     ButtonGroup,
     links as buttonGroupLinks,
 } from "~/components/buttonGroup";
-import { Heading } from "~/components/heading/Heading";
-import { Paragraph } from "~/components/paragraph/Paragraph";
+import * as Text from "~/components/text";
 
 export let links: LinksFunction = function () {
     return [
@@ -28,6 +27,7 @@ export let links: LinksFunction = function () {
         ...buttonGroupLinks(),
         ...buttonLinks(),
         ...textInputLinks(),
+        ...Text.links(),
     ];
 };
 
@@ -47,10 +47,10 @@ export default function ForgotPasswordRoute() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="reset-form">
-                <Heading level="h2">Password reset</Heading>
-                <Paragraph className="subtitle">
+                <Text.Heading level="h2">Password reset</Text.Heading>
+                <Text.Paragraph className="subtitle">
                     Send a link to your email to reset your password.
-                </Paragraph>
+                </Text.Paragraph>
 
                 <fieldset
                     disabled={!!actionData?.data || transition.state !== "idle"}
