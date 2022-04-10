@@ -1,4 +1,3 @@
-import { extractStyles } from "evergreen-ui";
 import React from "react";
 import {
     Links,
@@ -43,8 +42,6 @@ export const meta: MetaFunction = () => {
 };
 
 let Document: React.FC = function (props) {
-    const { css, hydrationScript } = extractStyles();
-
     return (
         <html lang="en">
             <head>
@@ -56,13 +53,12 @@ let Document: React.FC = function (props) {
                 <script>var global = globalThis;</script>
                 <Meta />
                 <Links />
-                <style dangerouslySetInnerHTML={{ __html: css }} />
             </head>
             <body>
                 {props.children}
                 <ScrollRestoration />
                 <Scripts />
-                {hydrationScript}
+
                 {process.env.NODE_ENV === "development" && <LiveReload />}
             </body>
         </html>
