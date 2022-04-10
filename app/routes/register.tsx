@@ -6,7 +6,6 @@ import {
     useSearchParams,
     useTransition,
 } from "remix";
-import { TextInput } from "~/components/form/TextInput";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { RequestContext } from "~/components/context";
 import { AuthController } from "~/controllers/admin/AuthController";
@@ -22,12 +21,17 @@ import {
 import { Heading } from "~/components/heading/Heading";
 import { Paragraph } from "~/components/paragraph/Paragraph";
 import { Text } from "~/components/text/Text";
+import {
+    TextInput,
+    links as textInputLinks,
+} from "~/components/form/TextInput";
 
 export let links: LinksFunction = function () {
     return [
         { rel: "stylesheet", href: routeStyle },
         ...buttonGroupLinks(),
         ...buttonLinks(),
+        ...textInputLinks(),
     ];
 };
 
@@ -47,9 +51,9 @@ export default function RegisterRoute() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="register-user">
-                <Heading level="h5">Welcome to the team</Heading>
+                <Heading level="h2">Welcome to the team</Heading>
 
-                <Text as="span" size="sm">
+                <Text as="span" size="md">
                     {" "}
                     All invited people will be granted access to all sites
                     within your organisation
@@ -65,25 +69,14 @@ export default function RegisterRoute() {
                     <TextInput
                         name="firstName"
                         label="First name"
-                        defaultValue={transition.submission?.formData.get(
-                            "firstName",
-                        )}
+                        type="text"
                     />
-                    <TextInput
-                        name="lastName"
-                        label="Last name"
-                        defaultValue={transition.submission?.formData.get(
-                            "lastName",
-                        )}
-                    />
+                    <TextInput name="lastName" label="Last name" type="text" />
                     <TextInput
                         name="email"
                         label="E-mail"
                         autoComplete="username"
-                        defaultValue={
-                            searchParams.get("email") ??
-                            transition.submission?.formData.get("email")
-                        }
+                        type="email"
                     />
                     <TextInput
                         name="password"
@@ -91,15 +84,8 @@ export default function RegisterRoute() {
                         type="password"
                         autoComplete="new-password"
                     />
-                    <TextInput
-                        type="hidden"
-                        name="token"
-                        defaultValue={
-                            searchParams.get("token") ??
-                            transition.submission?.formData.get("token")
-                        }
-                    />
-                    <ButtonGroup alignChildren="end">
+                    <TextInput type="hidden" name="token" />
+                    <ButtonGroup alignChildren="center">
                         <Button appearance="primary">Register</Button>
                     </ButtonGroup>
                 </fieldset>

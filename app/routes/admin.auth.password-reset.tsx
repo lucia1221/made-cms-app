@@ -5,7 +5,10 @@ import {
     useSearchParams,
     useTransition,
 } from "remix";
-import { TextInput } from "~/components/form/TextInput";
+import {
+    TextInput,
+    links as textInputLinks,
+} from "~/components/form/TextInput";
 import { Alert } from "~/components/alert";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { RequestContext } from "~/components/context";
@@ -24,6 +27,7 @@ export let links: LinksFunction = function () {
         { rel: "stylesheet", href: require("./admin.auth.password-reset.css") },
         ...buttonGroupLinks(),
         ...buttonLinks(),
+        ...textInputLinks(),
     ];
 };
 
@@ -44,7 +48,7 @@ export default function ForgotPasswordRoute() {
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="reset-form">
                 <Heading level="h2">Password reset</Heading>
-                <Paragraph>
+                <Paragraph className="subtitle">
                     Send a link to your email to reset your password.
                 </Paragraph>
 
@@ -54,15 +58,15 @@ export default function ForgotPasswordRoute() {
                     <TextInput
                         name="email"
                         type="email"
-                        label="Email address"
                         autoComplete="email"
+                        label="Email address"
                     />
                     <input
                         name="token"
                         defaultValue={searchParams.get("token") ?? ""}
                         type="hidden"
                     />
-                    <ButtonGroup alignChildren="end">
+                    <ButtonGroup alignChildren="center">
                         <Button appearance="primary">Reset password</Button>
                     </ButtonGroup>
                 </fieldset>

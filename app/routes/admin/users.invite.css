@@ -12,14 +12,8 @@
     gap: 10px;
 }
 
-.inv-text {
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1;
-}
-
 .subtitle {
-    font-size: 14.5px;
     opacity: 60%;
-    line-height: 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }

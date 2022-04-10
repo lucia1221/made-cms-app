@@ -1,8 +1,14 @@
 import { Form, LinksFunction, useActionData, useTransition } from "remix";
-import { InputGroup } from "~/components";
 import { Alert, links as alertLinks } from "~/components/alert";
+import { Button, links as buttonLinks } from "~/components/button";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { RequestContext } from "~/components/context";
+import {
+    TextInput,
+    links as textInputLinks,
+} from "~/components/form/TextInput";
+import { Heading } from "~/components/heading";
+import { Paragraph } from "~/components/paragraph";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { RequestResponse } from "~/models/RequestResponse";
 import { TransactionalEmail } from "~/models/transactionalEmail";
@@ -12,6 +18,8 @@ export let links: LinksFunction = function () {
     return [
         { rel: "stylesheet", href: require("./users.invite.css") },
         ...alertLinks(),
+        ...buttonLinks(),
+        ...textInputLinks(),
     ];
 };
 
@@ -32,32 +40,28 @@ export default function UserInvite() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="invitation-form">
-                <div className="inv-text">
-                    <span>Invite people</span>
-                </div>
-                <div>
-                    <p className="subtitle">
-                        All invited people will be granted access to all sites
-                        within your organisation.
-                    </p>
-                </div>
-                <span>Add to Team</span>
+                <Heading level="h1">Invite people</Heading>
+
+                <Paragraph className="subtitle">
+                    All invited people will be granted access to all sites
+                    within your organisation.
+                </Paragraph>
 
                 <fieldset
                     className="invitation-form-elements"
                     disabled={!!actionData?.data || transition.state !== "idle"}
                 >
-                    <InputGroup name="email">
-                        <input
-                            name="email"
-                            type="text"
-                            placeholder="Invite user by email"
-                        />
-                    </InputGroup>
-                    <button type="submit">
+                    <TextInput
+                        name="email"
+                        block={true}
+                        placeholder="Invite user by email"
+                        type="email"
+                    />
+
+                    <Button appearance="primary" type="submit">
                         {transition.state === "submitting" ? "Sending" : "Send"}{" "}
                         invitation
-                    </button>
+                    </Button>
                 </fieldset>
                 {actionData?.data ? (
                     <Alert type="success" style={{ marginTop: 20 }}>

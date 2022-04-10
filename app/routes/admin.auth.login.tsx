@@ -1,5 +1,8 @@
 import { Form, Link, LinksFunction } from "remix";
-import { TextInput } from "~/components/form/TextInput";
+import {
+    TextInput,
+    links as textInputLinks,
+} from "~/components/form/TextInput";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { Heading } from "~/components/heading/Heading";
 import { Paragraph } from "~/components/paragraph/Paragraph";
@@ -17,6 +20,7 @@ export let links: LinksFunction = function () {
         { rel: "stylesheet", href: require("./admin.auth.login.css") },
         ...buttonGroupLinks(),
         ...buttonLinks(),
+        ...textInputLinks(),
     ];
 };
 
@@ -37,8 +41,10 @@ export const CatchBoundary = createFormValidationCatchBoundary(LoginRoute);
 export default function LoginRoute() {
     return (
         <Form method="post" className="login-form">
-            <Heading level="h1">Welcome back!</Heading>
-            <Paragraph>Please enter your details.</Paragraph>
+            <Heading level="h2">Welcome back!</Heading>
+            <Paragraph className="subtitle">
+                Please enter your details.
+            </Paragraph>
             <TextInput
                 name="email"
                 type="email"
@@ -52,7 +58,7 @@ export default function LoginRoute() {
                 autoComplete="password"
             />
             <Link to={AUTH_ROUTES.passwordReset}>Forgot password</Link>
-            <ButtonGroup alignChildren="end">
+            <ButtonGroup alignChildren="center">
                 <Button appearance="primary">Login</Button>
             </ButtonGroup>
         </Form>
