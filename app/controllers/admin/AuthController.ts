@@ -200,4 +200,47 @@ export class AuthController {
 
         return { data: emailEntity.data, error: null };
     }
+
+    // public async resetPassword({
+    //     request,
+    // }: ActionFunctionArg): Promise<RequestResponse<TransactionalEmail>> {
+    //     let form = await request.formData();
+    //     let email = form.get<string>("email") ?? "";
+
+    //     let schema = getTransactionalEmailSchema();
+
+    //     try {
+    //         await schema.validate({ email });
+    //     } catch (error) {
+    //         return { data: null, error: error };
+    //     }
+
+    //     let emailEntity = await createTransactionalEmail(
+    //         email,
+    //         process.env.POSTMARK_TEMPLATE_PASSWORD_RESET,
+    //     );
+
+    //     if (emailEntity.error) {
+    //         throw json(emailEntity.error);
+    //     }
+
+    //     let actionUrl = new URL(AUTH_ROUTES.passwordReset, process.env.APP_URL);
+    //     actionUrl.searchParams.set("token", emailEntity.data.token);
+    //     actionUrl.searchParams.set("email", emailEntity.data.email);
+
+    //     let emailData = {
+    //         action_url: actionUrl.toString(),
+    //     };
+
+    //     let emailResponse = await sendTransactionalEmail(
+    //         emailEntity.data,
+    //         emailData,
+    //     );
+
+    //     if (emailResponse.error) {
+    //         throw json(emailResponse.error);
+    //     }
+
+    //     return { data: emailEntity.data, error: null };
+    // }
 }

@@ -1,4 +1,3 @@
-import { Heading, Paragraph } from "evergreen-ui";
 import {
     Form,
     LinksFunction,
@@ -17,6 +16,8 @@ import {
     ButtonGroup,
     links as buttonGroupLinks,
 } from "~/components/buttonGroup";
+import { Heading } from "~/components/heading/Heading";
+import { Paragraph } from "~/components/paragraph/Paragraph";
 
 export let links: LinksFunction = function () {
     return [
@@ -42,7 +43,7 @@ export default function ForgotPasswordRoute() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="reset-form">
-                <Heading size={700}>Password reset</Heading>
+                <Heading level="h2">Password reset</Heading>
                 <Paragraph>
                     Send a link to your email to reset your password.
                 </Paragraph>

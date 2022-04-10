@@ -1,4 +1,3 @@
-import { Heading, Paragraph } from "evergreen-ui";
 import {
     Form,
     Link,
@@ -20,6 +19,9 @@ import {
     ButtonGroup,
     links as buttonGroupLinks,
 } from "~/components/buttonGroup";
+import { Heading } from "~/components/heading/Heading";
+import { Paragraph } from "~/components/paragraph/Paragraph";
+import { Text } from "~/components/text/Text";
 
 export let links: LinksFunction = function () {
     return [
@@ -45,11 +47,14 @@ export default function RegisterRoute() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="register-user">
-                <Heading size={700}>Welcome to the team</Heading>
-                <Paragraph>
+                <Heading level="h5">Welcome to the team</Heading>
+
+                <Text as="span" size="sm">
+                    {" "}
                     All invited people will be granted access to all sites
                     within your organisation
-                </Paragraph>
+                </Text>
+
                 <Paragraph>Already A Member?</Paragraph>
                 <Link to={AUTH_ROUTES.login}>Log In</Link>
                 <fieldset

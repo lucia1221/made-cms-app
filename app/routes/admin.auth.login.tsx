@@ -1,7 +1,8 @@
-import { Heading, Paragraph } from "evergreen-ui";
 import { Form, Link, LinksFunction } from "remix";
 import { TextInput } from "~/components/form/TextInput";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
+import { Heading } from "~/components/heading/Heading";
+import { Paragraph } from "~/components/paragraph/Paragraph";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
 import { AUTH_ROUTES } from "./admin";
@@ -36,7 +37,7 @@ export const CatchBoundary = createFormValidationCatchBoundary(LoginRoute);
 export default function LoginRoute() {
     return (
         <Form method="post" className="login-form">
-            <Heading size={700}>Welcome back!</Heading>
+            <Heading level="h1">Welcome back!</Heading>
             <Paragraph>Please enter your details.</Paragraph>
             <TextInput
                 name="email"
