@@ -1,0 +1,28 @@
+.card {
+    border-radius: 4px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-padding-0 {
+    padding: 0;
+}
+
+.card-padding-xs {
+    padding: 0.5rem;
+}
+
+.card-padding-sm {
+    padding: 1rem;
+}
+
+.card-padding-md {
+    padding: 1.5rem;
+}
+
+.card-padding-lg {
+    padding: 2rem;
+}
+
+.card-padding-xl {
+    padding: 3rem;
+}
