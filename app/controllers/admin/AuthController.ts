@@ -46,14 +46,14 @@ export class AuthController {
             new URL(request.url).searchParams.get("redirectUrl") ?? "/admin";
 
         return redirect(redirectUrl, {
-            headers: { "set-cookie": sessionCookie },
+            headers: { "Set-Cookie": sessionCookie },
         });
     }
 
     public logoutUser(redirectUrl: string): Response {
         return redirect(redirectUrl, {
             headers: {
-                "set-cookie": logout(),
+                "Set-Cookie": logout(),
             },
         });
     }

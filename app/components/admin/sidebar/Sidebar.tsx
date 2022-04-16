@@ -30,7 +30,7 @@ export let Sidebar: React.FC = function () {
                 <Link to="/admin/profile" style={{ marginLeft: "auto" }}>
                     <Settings size={16} />
                 </Link>
-                <Link to={AUTH_ROUTES.logout}>
+                <Link to={AUTH_ROUTES.logout} reloadDocument>
                     <LogOut size={16} />
                 </Link>
             </div>

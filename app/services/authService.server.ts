@@ -81,5 +81,5 @@ export async function authenticateUser(
  * @returns Expired session cookie.
  */
 export function logout(): string {
-    return sessionCookie.serialize({}, { expires: new Date(0) });
+    return sessionCookie.serialize({}, { expires: new Date(0), maxAge: -1 });
 }
