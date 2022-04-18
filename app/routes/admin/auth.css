@@ -1,0 +1,30 @@
+.auth-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-auto-rows: 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    justify-items: center;
+    grid-template-areas: "auth-main";
+    min-height: 100vh;
+}
+
+.auth-main {
+    grid-area: auth-main;
+    padding: 56px;
+}
+
+.logo {
+    margin-left: 20px;
+    margin-bottom: 40px;
+}
+
+.page-container {
+    width: 460px;
+}
+
+.subtitle {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}

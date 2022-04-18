@@ -1,6 +1,5 @@
 import { AlertCircle, CheckCircle, Info, XOctagon } from "react-feather";
 import { LinksFunction } from "remix";
-import styles from "./Alert.css";
 
 interface Props {
     type: "success" | "error" | "warning" | "info";
@@ -8,7 +7,7 @@ interface Props {
 }
 
 export let links: LinksFunction = function () {
-    return [{ rel: "stylesheet", href: styles }];
+    return [{ rel: "stylesheet", href: require("./Alert.css") }];
 };
 
 export let Alert: React.FC<Props> = function (props) {
@@ -33,7 +32,7 @@ export let Alert: React.FC<Props> = function (props) {
     return (
         <div className={`alert alert-${props.type}`} style={props.style}>
             {icon}
-            {props.children}
+            <div>{props.children}</div>
         </div>
     );
 };

@@ -1,13 +1,25 @@
-import { LinksFunction, LoaderFunction, Outlet, redirect } from "remix";
+import {
+    json,
+    LinksFunction,
+    LoaderFunction,
+    Outlet,
+    redirect,
+    useLoaderData,
+} from "remix";
 import { Sidebar } from "~/components/admin";
 import { isRequestAuthenticated } from "~/services/authService.server";
 
 export const AUTH_ROUTES = {
     login: "/admin/auth/login",
     logout: "/admin/auth/logout",
-    register: "/register",
-    passwordReset: "/admin/auth/password-reset",
+    register: "/admin/auth/register",
+    passwordResetEmail: "/admin/auth/password-reset",
+    updatePassword: "/admin/auth/update-password",
 };
+
+interface LoaderData {
+    isAuthRoute: boolean;
+}
 
 const DEFAULT_ROUTE = "/admin/articles";
 
@@ -15,16 +27,13 @@ export const links: LinksFunction = function () {
     return [{ rel: "stylesheet", href: require("./admin.css") }];
 };
 
-export const loader: LoaderFunction = async function ({ request }) {
+export const loader: LoaderFunction = function ({ request }): Response {
     const url = new URL(request.url);
-    const isAuthRoute = Object.values(AUTH_ROUTES).some((route) =>
-        request.url.startsWith(route),
-    );
+    const isAuthRoute = url.pathname.startsWith("/admin/auth");
 
     if (isAuthRoute === false && isRequestAuthenticated(request) === false) {
         url.pathname = AUTH_ROUTES.login;
         url.searchParams.set("redirectTo", request.url);
-        console.log("redirect");
 
         return redirect(url.toString());
     }
@@ -33,17 +42,25 @@ export const loader: LoaderFunction = async function ({ request }) {
         return redirect(DEFAULT_ROUTE);
     }
 
-    return null;
+    return json<LoaderData>({
+        isAuthRoute: isAuthRoute,
+    });
 };
 
 export default function AdminRoute() {
+    let loaderData = useLoaderData<LoaderData>();
+
+    if (loaderData.isAuthRoute) {
+        return <Outlet />;
+    }
+
     return (
         <div className="container">
             <div className="sidebar">
-                <Sidebar></Sidebar>
+                <Sidebar />
             </div>
             <div className="main">
-                <Outlet></Outlet>
+                <Outlet />
             </div>
         </div>
     );

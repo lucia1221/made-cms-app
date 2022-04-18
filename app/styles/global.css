@@ -13,3 +13,11 @@
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
 }
+
+a {
+    color: var(--color-brand);
+}
+
+a svg {
+    vertical-align: text-bottom;
+}

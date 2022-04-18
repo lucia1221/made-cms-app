@@ -24,6 +24,7 @@ input[type="week"] {
     border-radius: var(--field-radius);
     color: var(--field-text-color);
     font-size: var(--field-text-size);
+    text-align: left;
 }
 
 input:focus {

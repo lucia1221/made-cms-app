@@ -47,3 +47,7 @@ button[disabled] {
     color: var(--button-link-color);
     text-decoration: underline;
 }
+
+.button-block {
+    width: 100%;
+}

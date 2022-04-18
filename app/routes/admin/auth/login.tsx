@@ -7,7 +7,7 @@ import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import * as Text from "~/components/text";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { ActionDataFunction } from "~/utils/remix";
-import { AUTH_ROUTES } from "./admin";
+import { AUTH_ROUTES } from "../../admin";
 import { Button, links as buttonLinks } from "~/components/button";
 import {
     ButtonGroup,
@@ -16,7 +16,7 @@ import {
 
 export let links: LinksFunction = function () {
     return [
-        { rel: "stylesheet", href: require("./admin.auth.login.css") },
+        { rel: "stylesheet", href: require("../auth.css") },
         ...buttonGroupLinks(),
         ...buttonLinks(),
         ...textInputLinks(),
@@ -41,7 +41,7 @@ export const CatchBoundary = createFormValidationCatchBoundary(LoginRoute);
 export default function LoginRoute() {
     return (
         <Form method="post" className="login-form">
-            <Text.Heading level="h2">Welcome back!</Text.Heading>
+            <Text.Heading level="h2">Sign in to your account</Text.Heading>
             <Text.Paragraph className="subtitle">
                 Please enter your details.
             </Text.Paragraph>
@@ -58,15 +58,18 @@ export default function LoginRoute() {
                 autoComplete="password"
             />
 
+            <Button
+                block
+                className="abc"
+                appearance="primary"
+                style={{ marginBottom: 20 }}
+            >
+                Login
+            </Button>
             <ButtonGroup alignChildren="center">
-                <Button
-                    appearance="link"
-                    formMethod="get"
-                    formAction={AUTH_ROUTES.passwordReset}
-                >
-                    Forgot password
-                </Button>
-                <Button appearance="primary">Login</Button>
+                <Link to={AUTH_ROUTES.passwordResetEmail}>
+                    Forgot password?
+                </Link>
             </ButtonGroup>
         </Form>
     );

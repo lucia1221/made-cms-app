@@ -1,5 +1,4 @@
 import { LinksFunction } from "remix";
-import { links as textLinks } from "~/components/text";
 import {
     CompositeField,
     CompositeFieldProps,
@@ -13,7 +12,6 @@ export let links: LinksFunction = function () {
     return [
         { rel: "stylesheet", href: require("../Form.css") },
         { rel: "stylesheet", href: require("./TextInput.css") },
-        ...textLinks(),
     ];
 };
 

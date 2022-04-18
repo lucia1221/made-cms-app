@@ -19,10 +19,41 @@ import {
 import { ActionFunctionArg } from "~/utils/remix";
 import {
     getTransactionalEmailSchema,
+    getUserLoginSchema,
     getUserRegistrationSchema,
 } from "~/utils/validationSchemas";
 
 export class AuthController {
+    async setNewPassword({ request }: ActionFunctionArg): Promise<Response> {
+        let form = await request.formData();
+        let token = form.get<string>("token") ?? "";
+        let password = form.get<string>("password") ?? "";
+
+        let emailEntity = await findTransactionalEmail(token);
+        if (emailEntity.error) {
+            throw json({ error: emailEntity.error, data: null });
+        }
+
+        let schema = getUserLoginSchema();
+        try {
+            await schema.validate(
+                { password, email: emailEntity.data.email },
+                { abortEarly: false, stripUnknown: true },
+            );
+        } catch (error) {
+            return json({ data: null, error: error });
+        }
+
+        await databaseService()
+            .from<User>("users")
+            .update({ password })
+            .match({ email: emailEntity.data.email });
+
+        await claimTransactionalEmail(emailEntity.data);
+
+        return json({ error: null, data: true });
+    }
+
     public async authenticateUserWithCredentials({
         request,
     }: ActionFunctionArg): Promise<Response> {
@@ -181,7 +212,10 @@ export class AuthController {
             throw json(emailEntity.error);
         }
 
-        let actionUrl = new URL(AUTH_ROUTES.passwordReset, process.env.APP_URL);
+        let actionUrl = new URL(
+            AUTH_ROUTES.updatePassword,
+            process.env.APP_URL,
+        );
         actionUrl.searchParams.set("token", emailEntity.data.token);
         actionUrl.searchParams.set("email", emailEntity.data.email);
 
@@ -200,47 +234,4 @@ export class AuthController {
 
         return { data: emailEntity.data, error: null };
     }
-
-    // public async resetPassword({
-    //     request,
-    // }: ActionFunctionArg): Promise<RequestResponse<TransactionalEmail>> {
-    //     let form = await request.formData();
-    //     let email = form.get<string>("email") ?? "";
-
-    //     let schema = getTransactionalEmailSchema();
-
-    //     try {
-    //         await schema.validate({ email });
-    //     } catch (error) {
-    //         return { data: null, error: error };
-    //     }
-
-    //     let emailEntity = await createTransactionalEmail(
-    //         email,
-    //         process.env.POSTMARK_TEMPLATE_PASSWORD_RESET,
-    //     );
-
-    //     if (emailEntity.error) {
-    //         throw json(emailEntity.error);
-    //     }
-
-    //     let actionUrl = new URL(AUTH_ROUTES.passwordReset, process.env.APP_URL);
-    //     actionUrl.searchParams.set("token", emailEntity.data.token);
-    //     actionUrl.searchParams.set("email", emailEntity.data.email);
-
-    //     let emailData = {
-    //         action_url: actionUrl.toString(),
-    //     };
-
-    //     let emailResponse = await sendTransactionalEmail(
-    //         emailEntity.data,
-    //         emailData,
-    //     );
-
-    //     if (emailResponse.error) {
-    //         throw json(emailResponse.error);
-    //     }
-
-    //     return { data: emailEntity.data, error: null };
-    // }
 }

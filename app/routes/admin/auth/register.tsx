@@ -1,18 +1,10 @@
-import {
-    Form,
-    Link,
-    LinksFunction,
-    useActionData,
-    useSearchParams,
-    useTransition,
-} from "remix";
+import { Form, Link, LinksFunction, useActionData, useTransition } from "remix";
 import { createFormValidationCatchBoundary } from "~/components/CatchBoundary";
 import { RequestContext } from "~/components/context";
 import { AuthController } from "~/controllers/admin/AuthController";
 import { RequestResponse } from "~/models/RequestResponse";
 import { ActionDataFunction } from "~/utils/remix";
-import { AUTH_ROUTES } from "./admin";
-import routeStyle from "./register.css";
+import { AUTH_ROUTES } from "../../admin";
 import { Button, links as buttonLinks } from "~/components/button";
 import {
     ButtonGroup,
@@ -26,7 +18,7 @@ import {
 
 export let links: LinksFunction = function () {
     return [
-        { rel: "stylesheet", href: routeStyle },
+        { rel: "stylesheet", href: require("../auth.css") },
         ...buttonGroupLinks(),
         ...buttonLinks(),
         ...textInputLinks(),
@@ -43,13 +35,12 @@ export let action: ActionDataFunction = async function (args) {
 export const CatchBoundary = createFormValidationCatchBoundary(RegisterRoute);
 
 export default function RegisterRoute() {
-    let [searchParams] = useSearchParams();
     let actionData = useActionData<RequestResponse>();
     let transition = useTransition();
 
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
-            <Form method="post" className="register-user">
+            <Form method="post">
                 <Text.Heading level="h2">Welcome to the team</Text.Heading>
 
                 <Text.Text as="span" size="md">
@@ -57,8 +48,6 @@ export default function RegisterRoute() {
                     within your organisation
                 </Text.Text>
 
-                <Text.Paragraph>Already A Member?</Text.Paragraph>
-                <Link to={AUTH_ROUTES.login}>Log In</Link>
                 <fieldset
                     disabled={
                         transition.state === "submitting" || !!actionData?.data
@@ -83,8 +72,18 @@ export default function RegisterRoute() {
                         autoComplete="new-password"
                     />
                     <TextInput type="hidden" name="token" />
+                    <Button
+                        appearance="primary"
+                        block
+                        style={{ marginBottom: 20 }}
+                    >
+                        Register
+                    </Button>
                     <ButtonGroup alignChildren="center">
-                        <Button appearance="primary">Register</Button>
+                        <Text.Paragraph>
+                            Already A Member?{" "}
+                            <Link to={AUTH_ROUTES.login}>Log In</Link>
+                        </Text.Paragraph>
                     </ButtonGroup>
                 </fieldset>
             </Form>

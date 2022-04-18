@@ -5,17 +5,17 @@ export let links: LinksFunction = function () {
     return [{ rel: "stylesheet", href: require("./Card.css") }];
 };
 
-interface Props {
-    padding?: "0" | "xs" | "sm" | "md" | "lg" | "xl";
+type DivProps = JSX.IntrinsicElements["div"];
+
+interface Props extends DivProps {
+    padding: "0" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 }
 
-export let Card: React.FC<Props> = function (props) {
+export let Card: React.FC<Props> = function ({ padding, ...props }) {
     return (
         <div
-            className={cx("card", {
-                [`card-padding-${props.padding}`]: props.padding,
-                "card-padding-0": props.padding === undefined,
-            })}
+            {...props}
+            className={cx(props.className, "card", `card-padding-${padding}`)}
         >
             {props.children}
         </div>

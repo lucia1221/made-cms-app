@@ -3,9 +3,11 @@ import {
     Links,
     LinksFunction,
     LiveReload,
+    LoaderFunction,
     Meta,
     MetaFunction,
     Outlet,
+    redirect,
     Scripts,
     ScrollRestoration,
 } from "remix";
@@ -39,6 +41,17 @@ export let links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => {
     return { title: "Blog by .made" };
+};
+
+export let loader: LoaderFunction = ({ request }) => {
+    let url = new URL(request.url);
+
+    if (url.pathname.endsWith("/")) {
+        url.pathname = url.pathname.replace(/\/+$/, "");
+        return redirect(url.toString());
+    }
+
+    return null;
 };
 
 let Document: React.FC = function (props) {

@@ -2,12 +2,15 @@ import cx from "classnames";
 import { Book, LogOut, Settings, Users } from "react-feather";
 import { Link, NavLink } from "remix";
 import { Avatar } from "~/components";
+import { Logo } from "~/components/logo";
 import { AUTH_ROUTES } from "~/routes/admin";
 
 export let Sidebar: React.FC = function () {
     return (
         <>
-            <div className="sidebar-header">Logo</div>
+            <div className="sidebar-header">
+                <Logo height={24}></Logo>
+            </div>
             <div className="sidebar-main">
                 <NavLink to="/admin/articles" className={getClassName}>
                     <Book /> <span>articles</span>
