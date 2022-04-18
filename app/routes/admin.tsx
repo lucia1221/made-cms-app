@@ -7,7 +7,9 @@ import {
     useLoaderData,
 } from "remix";
 import { Sidebar } from "~/components/admin";
-import { isRequestAuthenticated } from "~/services/authService.server";
+import { RequestContext } from "~/components/context";
+import { SessionUser } from "~/models/user";
+import { getSessionData } from "~/services/authService.server";
 
 export const AUTH_ROUTES = {
     login: "/admin/auth/login",
@@ -19,6 +21,7 @@ export const AUTH_ROUTES = {
 
 interface LoaderData {
     isAuthRoute: boolean;
+    sessionData: null | SessionUser;
 }
 
 const DEFAULT_ROUTE = "/admin/articles";
@@ -30,8 +33,9 @@ export const links: LinksFunction = function () {
 export const loader: LoaderFunction = function ({ request }): Response {
     const url = new URL(request.url);
     const isAuthRoute = url.pathname.startsWith("/admin/auth");
+    const sessionData = getSessionData<SessionUser>(request);
 
-    if (isAuthRoute === false && isRequestAuthenticated(request) === false) {
+    if (isAuthRoute === false && sessionData === null) {
         url.pathname = AUTH_ROUTES.login;
         url.searchParams.set("redirectTo", request.url);
 
@@ -44,6 +48,7 @@ export const loader: LoaderFunction = function ({ request }): Response {
 
     return json<LoaderData>({
         isAuthRoute: isAuthRoute,
+        sessionData: sessionData,
     });
 };
 
@@ -55,13 +60,15 @@ export default function AdminRoute() {
     }
 
     return (
-        <div className="container">
-            <div className="sidebar">
-                <Sidebar />
+        <RequestContext.Provider value={{ session: loaderData.sessionData }}>
+            <div className="container">
+                <div className="sidebar">
+                    <Sidebar />
+                </div>
+                <div className="main">
+                    <Outlet />
+                </div>
             </div>
-            <div className="main">
-                <Outlet />
-            </div>
-        </div>
+        </RequestContext.Provider>
     );
 }

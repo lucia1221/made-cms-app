@@ -1,6 +1,6 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 
-interface CookieOptions {
+export interface CookieOptions {
     expires?: Date;
     httpOnly?: boolean;
     maxAge?: number;

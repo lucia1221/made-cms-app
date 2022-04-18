@@ -5,3 +5,8 @@ export interface User {
     password: string;
     email: string;
 }
+
+export type SessionUser = Pick<
+    User,
+    "firstName" | "lastName" | "email" | "password"
+>;
