@@ -1,0 +1,15 @@
+.avatar {
+    background: grey;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50%;
+    vertical-align: middle;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-alt {
+    color: white;
+    font-weight: 700;
+}
