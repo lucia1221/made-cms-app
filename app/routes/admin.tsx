@@ -33,7 +33,7 @@ export const links: LinksFunction = function () {
 export const loader: LoaderFunction = function ({ request }): Response {
     const url = new URL(request.url);
     const isAuthRoute = url.pathname.startsWith("/admin/auth");
-    const sessionData = getSessionData<SessionUser>(request);
+    const sessionData = getSessionData(request);
 
     if (isAuthRoute === false && sessionData === null) {
         url.pathname = AUTH_ROUTES.login;

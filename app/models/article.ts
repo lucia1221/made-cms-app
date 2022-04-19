@@ -6,4 +6,5 @@ export interface Article {
     content: string;
     tags: Tag[];
     created_at: string;
+    authorId: number;
 }

@@ -1,4 +1,4 @@
-import { User } from "~/models/user";
+import { SessionUser, User } from "~/models/user";
 import { getUserLoginSchema } from "~/utils/validationSchemas";
 import { databaseService } from "./databaseService.server";
 import { CookieOptions, createJwtCookie } from "./jwtCookieService.server";
@@ -28,10 +28,11 @@ const SESSION_COOKIE_OPTIONS: CookieOptions = {
  * @param request Request
  * @returns Session data or null.
  */
-export function getSessionData<T>(request: Request): null | T {
-    return createJwtCookie<T>("session", SESSION_COOKIE_OPTIONS).parse(
-        request.headers.get("cookie"),
-    );
+export function getSessionData(request: Request): null | SessionUser {
+    return createJwtCookie<SessionUser>(
+        "session",
+        SESSION_COOKIE_OPTIONS,
+    ).parse(request.headers.get("cookie"));
 }
 
 /**

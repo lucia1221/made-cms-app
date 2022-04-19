@@ -1,17 +1,8 @@
-import { DataFunctionArgs } from "@remix-run/server-runtime";
-import {
-    ActionFunction,
-    LinksFunction,
-    LoaderFunction,
-    redirect,
-    useFetcher,
-    useLoaderData,
-} from "remix";
+import { LinksFunction, LoaderFunction, redirect, useLoaderData } from "remix";
 import { ClientOnly } from "~/components";
 import { ArticleEditor, links as articleEditorLinks } from "~/components/admin";
 import { Article } from "~/models/article";
-import { ArticleTag } from "~/models/article_tag";
-import { Tag } from "~/models/tag";
+import { getSessionData } from "~/services/authService.server";
 import { databaseService } from "~/services/databaseService.server";
 
 export let links: LinksFunction = function () {
@@ -49,21 +40,21 @@ interface Ctx {
 
 export const action = async function ({ request, params }: Ctx) {
     const form = await request.formData();
+    const author = getSessionData(request)!;
 
     const articleToSave: Partial<Article> = {
         title: form.get("title")?.toString() ?? "",
         content: form.get("content")?.toString() ?? "",
+        authorId: author.id,
     };
 
     let saveOperationResult;
 
     if (params.articleId == "new") {
-        // let createOperationResult = await databaseService()
         saveOperationResult = await databaseService()
             .from<Article>("articles")
             .insert(articleToSave);
     } else {
-        // let updateOperationResult = await databaseService()
         saveOperationResult = await databaseService()
             .from<Article>("articles")
             .update(articleToSave)

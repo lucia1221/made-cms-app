@@ -4,7 +4,7 @@ import { SessionUser } from "~/models/user";
 
 /**
  * Get session data from global context.
- * 
+ *
  * @returns Session data
  */
 export function useSessionData(): SessionUser | null {
