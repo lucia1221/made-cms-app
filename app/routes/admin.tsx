@@ -6,7 +6,7 @@ import {
     redirect,
     useLoaderData,
 } from "remix";
-import { Sidebar } from "~/components/admin";
+import { Sidebar, links as sidebarLinks } from "~/components/admin/sidebar";
 import { RequestContext } from "~/components/context";
 import { SessionUser } from "~/models/user";
 import { getSessionData } from "~/services/authService.server";
@@ -27,7 +27,10 @@ interface LoaderData {
 const DEFAULT_ROUTE = "/admin/articles";
 
 export const links: LinksFunction = function () {
-    return [{ rel: "stylesheet", href: require("./admin.css") }];
+    return [
+        { rel: "stylesheet", href: require("./admin.css") },
+        ...sidebarLinks(),
+    ];
 };
 
 export const loader: LoaderFunction = function ({ request }): Response {

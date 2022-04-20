@@ -15,7 +15,7 @@ import { ActionDataFunction } from "~/utils/remix";
 
 export let links: LinksFunction = function () {
     return [
-        { rel: "stylesheet", href: require("./users.invite.css") },
+        { rel: "stylesheet", href: require("./invite.css") },
         ...alertLinks(),
         ...buttonLinks(),
         ...textInputLinks(),
@@ -40,8 +40,6 @@ export default function UserInvite() {
     return (
         <RequestContext.Provider value={{ error: actionData?.error }}>
             <Form method="post" className="invitation-form">
-                <Text.Heading level="h1">Invite people</Text.Heading>
-
                 <Text.Paragraph className="subtitle">
                     All invited people will be granted access to all sites
                     within your organisation.

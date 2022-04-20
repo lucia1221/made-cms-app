@@ -57,7 +57,12 @@ export let Avatar: React.FC<Props> = function (props) {
                     ...sizeStyle,
                 }}
             >
-                <span className="avatar-alt">{letter}</span>
+                <span
+                    className="avatar-alt"
+                    style={{ fontSize: props.size / 2 }}
+                >
+                    {letter}
+                </span>
             </div>
         );
     }

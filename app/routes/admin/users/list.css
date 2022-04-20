@@ -1,0 +1,36 @@
+.user-list-layout {
+    border: 1px solid #dedede;
+    border-radius: 6px;
+    margin-top: 2rem;
+    display: flex;
+    overflow: hidden;
+}
+
+.user-list {
+    width: 100%;
+}
+
+.user-list a {
+    display: flex;
+    text-decoration: none;
+    line-height: 1;
+    padding: 10px 20px;
+    gap: 20px;
+    align-items: center;
+}
+
+.user-list a.active,
+.user-list a:hover {
+    background: #e5e5e5;
+}
+
+.user-list .name {
+    color: black;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.user-list .email {
+    color: dimgrey;
+    font-size: 15px;
+}

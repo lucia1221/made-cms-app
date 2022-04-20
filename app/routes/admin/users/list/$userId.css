@@ -1,0 +1,27 @@
+.user-detail {
+    border-left: 1px solid #dedede;
+    padding: 2rem;
+    width: 100%;
+    max-width: 50%;
+}
+
+.user-detail .avatar {
+    margin-bottom: 2rem;
+}
+
+.user-detail .title {
+    display: flex;
+    padding-top: 20px;
+}
+
+.user-detail .date {
+    color: dimgrey;
+    font-size: 15px;
+}
+
+.user-detail .header {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

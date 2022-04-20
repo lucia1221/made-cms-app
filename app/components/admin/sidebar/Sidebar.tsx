@@ -1,11 +1,18 @@
 import cx from "classnames";
 import { Book, LogOut, Settings, Users } from "react-feather";
-import { Link, NavLink } from "remix";
-import { Avatar } from "~/components";
+import { Link, LinksFunction, NavLink } from "remix";
+import { Avatar, links as avatarLinks } from "~/components/avatar";
 import { Logo } from "~/components/logo";
+import { useSessionData } from "~/hooks/useSessionData";
 import { AUTH_ROUTES } from "~/routes/admin";
 
+export let links: LinksFunction = function () {
+    return [...avatarLinks()];
+};
+
 export let Sidebar: React.FC = function () {
+    let sessionData = useSessionData()!;
+    let fullName = `${sessionData.firstName} ${sessionData.lastName}`;
     return (
         <>
             <div className="sidebar-header">
@@ -15,20 +22,15 @@ export let Sidebar: React.FC = function () {
                 <NavLink to="/admin/articles" className={getClassName}>
                     <Book /> <span>articles</span>
                 </NavLink>
-                <NavLink to="/admin/users" className={getClassName}>
+                <NavLink to="/admin/users/list" className={getClassName}>
                     <Users />
                     <span>users</span>
                 </NavLink>
             </div>
             <div className="sidebar-footer">
-                <Avatar
-                    size={40}
-                    imageUrl={
-                        "https://scontent.fhrk1-1.fna.fbcdn.net/v/t1.6435-9/36262132_1736364299792325_6825084014123024384_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=U5YgPmveZT4AX91eEa9&_nc_ht=scontent.fhrk1-1.fna&oh=00_AT-fxW9wwLsRNVdhNcF4fcHSwNLtN9naswvul7OnGKZJbQ&oe=62205AFC"
-                    }
-                />
+                <Avatar size={40} alt={fullName} />
 
-                <span className="profile-name">Lucia Badinová</span>
+                <span className="profile-name">{fullName}</span>
 
                 <Link to="/admin/profile" style={{ marginLeft: "auto" }}>
                     <Settings size={16} />
