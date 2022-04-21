@@ -1,0 +1,32 @@
+.route-profile {
+    margin: 2rem auto 0 auto;
+    max-width: 800px;
+}
+
+.route-profile .section {
+    padding: 2rem 0;
+    display: flex;
+    border-bottom: 1px solid #dedede;
+}
+
+.route-profile .section:last-of-type {
+    border-bottom: 0;
+}
+
+.route-profile .section .title {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    padding-right: 4rem;
+}
+
+.route-profile .section .field {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+.route-profile .field .form-field:last-of-type {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
