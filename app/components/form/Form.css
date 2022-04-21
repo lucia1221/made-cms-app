@@ -43,6 +43,8 @@ fieldset {
     display: flex;
     align-items: center;
     text-transform: capitalize;
+    color: var(--color-danger);
+    font-size: 12px;
 }
 
 .form-field-error .leading-icon {

@@ -2,6 +2,7 @@ import { LinksFunction } from "remix";
 import {
     CompositeField,
     CompositeFieldProps,
+    links as compositeFieldLinks,
 } from "../CompositeField/CompositeField";
 
 interface Props extends React.ComponentProps<"input">, CompositeFieldProps {
@@ -12,6 +13,7 @@ export let links: LinksFunction = function () {
     return [
         { rel: "stylesheet", href: require("../Form.css") },
         { rel: "stylesheet", href: require("./TextInput.css") },
+        ...compositeFieldLinks(),
     ];
 };
 

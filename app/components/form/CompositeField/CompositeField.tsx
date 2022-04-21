@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { AlertCircle } from "react-feather";
 import { LinksFunction } from "remix";
-import { links as textLinks, Text } from "~/components/text";
+import * as Text from "~/components/text";
 import { useValidationError } from "~/hooks/useValidationError";
 
 export interface CompositeFieldProps {
@@ -15,7 +15,7 @@ export interface CompositeFieldProps {
 export let links: LinksFunction = function () {
     return [
         { rel: "stylesheet", href: require("../Form.css") },
-        ...textLinks(),
+        ...Text.links(),
     ];
 };
 
@@ -30,20 +30,20 @@ export let CompositeField: React.FC<CompositeFieldProps> = function (props) {
             style={props.style}
         >
             {props.label && (
-                <Text
+                <Text.Text
                     as="label"
                     className="form-field-label"
                     size="md"
                     weight="bold"
                 >
                     {props.label}
-                </Text>
+                </Text.Text>
             )}
 
             {props.children}
 
             {validationError ? (
-                <Text
+                <Text.Text
                     as="span"
                     color="error"
                     className="form-field-error"
@@ -51,7 +51,7 @@ export let CompositeField: React.FC<CompositeFieldProps> = function (props) {
                 >
                     <AlertCircle size={16} className="leading-icon" />
                     {validationError.message}
-                </Text>
+                </Text.Text>
             ) : null}
         </div>
     );

@@ -36,13 +36,19 @@ export let action: ActionDataFunction = function (args) {
     }
 };
 
+function getFileBlob(canvas: HTMLCanvasElement): Promise<Blob> {
+    return new Promise((resolve) => {
+        canvas.toBlob((blob) => resolve(blob!), "image/jpeg", 0.95);
+    });
+}
+
 export default function ProfileRoute() {
     let FORM_ID = "profile-form";
     let AVATAR_FIELD_NAME = "avatar";
 
     let avatarInputRef = createRef<AvatarEditor>();
 
-    let handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    let handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         let avatar = avatarInputRef.current?.getImage();
@@ -51,26 +57,15 @@ export default function ProfileRoute() {
         );
 
         if (avatar) {
-            avatar.toBlob(
-                (blob) => {
-                    if (blob) {
-                        formData.set(AVATAR_FIELD_NAME, blob);
-                    }
-
-                    fetcher.submit(formData, {
-                        encType: "multipart/form-data",
-                        method: "patch",
-                    });
-                },
-                "image/jpeg",
-                0.9,
-            );
+            formData.set(AVATAR_FIELD_NAME, await getFileBlob(avatar));
         } else {
-            fetcher.submit(formData, {
-                encType: "multipart/form-data",
-                method: "patch",
-            });
+            formData.delete(AVATAR_FIELD_NAME);
         }
+
+        fetcher.submit(formData, {
+            encType: "multipart/form-data",
+            method: "patch",
+        });
     };
 
     let fetcher = useFetcher();
@@ -89,31 +84,42 @@ export default function ProfileRoute() {
                 method="patch"
                 encType="multipart/form-data"
                 onSubmit={handleSubmit}
+                className="route-profile"
             >
-                <AvatarInput name={AVATAR_FIELD_NAME} ref={avatarInputRef} />
-                <div className="text-inputs">
-                    <TextInput
-                        name="firstName"
-                        type="text"
-                        defaultValue={user.firstName}
-                        label="First Name"
-                    />
-                    <TextInput
-                        name="lastName"
-                        type="text"
-                        defaultValue={user.lastName}
-                        label="Last Name"
+                <div>
+                    <AvatarInput
+                        name={AVATAR_FIELD_NAME}
+                        ref={avatarInputRef}
+                        src={user.avatar}
+                        alt={user.firstName}
                     />
                 </div>
-                <Button type="submit" appearance="primary">
-                    Save changes
+
+                <TextInput
+                    name="firstName"
+                    type="text"
+                    defaultValue={user.firstName}
+                    label="First Name"
+                />
+                <TextInput
+                    name="lastName"
+                    type="text"
+                    defaultValue={user.lastName}
+                    label="Last Name"
+                />
+
+                <Button
+                    type="submit"
+                    appearance="primary"
+                    disabled={fetcher.state !== "idle"}
+                >
+                    {fetcher.state !== "idle"
+                        ? "Saving changes"
+                        : "Save changes"}
                 </Button>
 
                 {fetcher.data?.user ? (
-                    <Alert
-                        type="success"
-                        style={{ marginTop: 20, width: 400, height: 40 }}
-                    >
+                    <Alert type="success" style={{ marginTop: 20 }}>
                         Profile update successfully.
                     </Alert>
                 ) : null}

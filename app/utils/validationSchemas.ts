@@ -31,7 +31,7 @@ export function getTransactionalEmailSchema() {
     });
 }
 
-export function getUserProfileUpdateSchema(){
+export function getUserProfileUpdateSchema() {
     return object({
         firstName: string().required(),
         lastName: string().required(),

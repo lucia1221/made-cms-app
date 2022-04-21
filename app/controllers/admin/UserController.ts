@@ -17,10 +17,6 @@ import { getUserProfileUpdateSchema } from "~/utils/validationSchemas";
 
 const ONE_YEAR_IN_SECONDS = 365 * 12 * 24 * 60 * 60;
 
-const uploadHandler = unstable_createMemoryUploadHandler({
-    // maxFileSize: 500_000,
-});
-
 export class UserController {
     async updateAuthenticatedUser({
         request,
@@ -33,30 +29,27 @@ export class UserController {
 
         const formData = await unstable_parseMultipartFormData(
             request,
-            uploadHandler,
+            unstable_createMemoryUploadHandler({}),
         );
 
-        console.log(formData);
+        let updatePayload: Partial<User> = {};
 
-        let firstName = formData.get<string>("firstName") ?? "";
-        let lastName = formData.get<string>("lastName") ?? "";
-        console.log({ lastName, firstName });
-
-        let schema = getUserProfileUpdateSchema();
         try {
-            await schema.validate({
-                firstName,
-                lastName,
-            });
+            updatePayload = await getUserProfileUpdateSchema().validate(
+                {
+                    firstName:
+                        (formData.get("firstName") as null | string) ?? "",
+                    lastName: (formData.get("lastName") as null | string) ?? "",
+                },
+                { abortEarly: false, stripUnknown: true },
+            );
         } catch (error) {
-            console.log(error);
-
             return json({ data: null, error: error });
         }
 
-        const file = formData.get("avatar");
+        const file = formData.get("avatar") as File;
+
         let user: PostgrestSingleResponse<User>;
-        let updatePayload: Partial<User> = { firstName, lastName };
 
         if (file) {
             user = await databaseService()

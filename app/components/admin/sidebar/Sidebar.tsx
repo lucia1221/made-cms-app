@@ -28,7 +28,11 @@ export let Sidebar: React.FC = function () {
                 </NavLink>
             </div>
             <div className="sidebar-footer">
-                <Avatar size={40} alt={fullName} imageUrl={sessionData.avatar} />
+                <Avatar
+                    size={40}
+                    alt={fullName}
+                    imageUrl={sessionData.avatar}
+                />
 
                 <span className="profile-name">{fullName}</span>
 

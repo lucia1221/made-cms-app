@@ -4,7 +4,10 @@ export interface User {
     lastName: string;
     password: string;
     email: string;
-    avatar: string | null
+    avatar: string | null;
 }
 
-export type SessionUser = Pick<User, "firstName" | "lastName" | "email" | "id" | 'avatar'>;
+export type SessionUser = Pick<
+    User,
+    "firstName" | "lastName" | "email" | "id" | "avatar"
+>;
