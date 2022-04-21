@@ -2,6 +2,7 @@ import { SessionUser, User } from "~/models/user";
 import { getUserLoginSchema } from "~/utils/validationSchemas";
 import { databaseService } from "./databaseService.server";
 import { CookieOptions, createJwtCookie } from "./jwtCookieService.server";
+import { storageService } from "./storageService.server";
 
 const ONE_WEEK_IN_SECONDS = 604800;
 
@@ -60,10 +61,14 @@ export async function authenticateUser(
         throw new AuthenticationError("Invalid user name and/or password");
     }
 
+    return authenticateUserById(userIdentifier.data.id);
+}
+
+export async function authenticateUserById(id: number): Promise<string> {
     let user = await databaseService()
         .from<User>("users")
         .select()
-        .match({ id: userIdentifier.data.id })
+        .match({ id })
         .single();
 
     if (user.error) {
@@ -75,6 +80,10 @@ export async function authenticateUser(
         firstName: user.data.firstName,
         lastName: user.data.lastName,
         email: user.data.email,
+        avatar: user.data.avatar
+            ? storageService().from("avatars").getPublicUrl(user.data.avatar)
+                  .publicURL
+            : null,
     });
 }
 

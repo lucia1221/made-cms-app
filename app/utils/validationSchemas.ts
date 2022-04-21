@@ -30,3 +30,10 @@ export function getTransactionalEmailSchema() {
         email: string().email().required(),
     });
 }
+
+export function getUserProfileUpdateSchema(){
+    return object({
+        firstName: string().required(),
+        lastName: string().required(),
+    });
+}

@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { Book, LogOut, Settings, Users } from "react-feather";
+import { Book, LogOut, Settings, User, Users } from "react-feather";
 import { Link, LinksFunction, NavLink } from "remix";
 import { Avatar, links as avatarLinks } from "~/components/avatar";
 import { Logo } from "~/components/logo";
@@ -28,7 +28,7 @@ export let Sidebar: React.FC = function () {
                 </NavLink>
             </div>
             <div className="sidebar-footer">
-                <Avatar size={40} alt={fullName} />
+                <Avatar size={40} alt={fullName} imageUrl={sessionData.avatar} />
 
                 <span className="profile-name">{fullName}</span>
 

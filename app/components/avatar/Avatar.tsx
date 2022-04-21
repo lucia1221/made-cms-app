@@ -3,7 +3,7 @@ import { LinksFunction } from "remix";
 
 interface Props {
     size: number;
-    imageUrl?: string;
+    imageUrl?: string | null;
     alt?: string;
 }
 
