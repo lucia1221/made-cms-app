@@ -27,7 +27,6 @@
     gap: 0px 0px;
     grid-auto-flow: row;
     grid-area: sidebar;
-    background-color: lightgray;
 }
 
 .sidebar-header {
@@ -56,24 +55,29 @@
     padding: 2rem;
 }
 
-.block-link {
+.sidebar-main a {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 10px 15px;
     margin-bottom: 4px;
     border-radius: 10px;
     column-gap: 10px;
+    text-decoration: none;
 }
 
-.block-link-active {
-    background-color: darkgray;
+.sidebar-main a.active {
+    background-color: #f3f4f7;
 }
 
-.avatar {
-    background: grey;
-    background-position: center;
-    background-size: cover;
-    border-radius: 50%;
+.sidebar-main a,
+.sidebar-main a * {
+    color: #333;
+    font-weight: 700;
+    font-family: "Montserrat";
+}
+
+.sidebar-main svg {
+    opacity: 0.75;
 }
 
 .profile-name {

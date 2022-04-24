@@ -16,13 +16,13 @@ export let Sidebar: React.FC = function () {
     return (
         <>
             <div className="sidebar-header">
-                <Logo height={24}></Logo>
+                <Logo height={32}></Logo>
             </div>
             <div className="sidebar-main">
-                <NavLink to="/admin/articles" className={getClassName}>
+                <NavLink to="/admin/articles">
                     <Book /> <span>articles</span>
                 </NavLink>
-                <NavLink to="/admin/users/list" className={getClassName}>
+                <NavLink to="/admin/users/list">
                     <Users />
                     <span>users</span>
                 </NavLink>
@@ -49,7 +49,3 @@ export let Sidebar: React.FC = function () {
         </>
     );
 };
-
-function getClassName(props: { isActive: boolean }): string {
-    return cx("block-link", { "block-link-active": props.isActive });
-}
